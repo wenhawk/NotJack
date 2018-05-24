@@ -10,18 +10,17 @@ use Yii;
  * @property int $area_id
  * @property string $name
  * @property int $total_area
+ * @property int $rate
+ * @property int $flag
  *
- * @property AreaRate[] $areaRates
+ * @property Orders[] $orders
  * @property Plot[] $plots
- * @property Rate[] $rates
  */
 class Area extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
      */
-    public $area_rate;
-
     public static function tableName()
     {
         return 'area';
@@ -33,8 +32,10 @@ class Area extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['total_area', 'area_rate'], 'integer'],
+            [['total_area', 'rate'], 'integer'],
+            [['rate', 'flag'], 'required'],
             [['name'], 'string', 'max' => 100],
+            [['flag'], 'string', 'max' => 4],
         ];
     }
 
@@ -45,17 +46,19 @@ class Area extends \yii\db\ActiveRecord
     {
         return [
             'area_id' => 'Industrial Estate',
-            'name' => 'Name',
+            'name' => 'Area',
             'total_area' => 'Total Area',
+            'rate' => 'Rate',
+            'flag' => 'Status',
         ];
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getAreaRates()
+    public function getOrders()
     {
-        return $this->hasMany(AreaRate::className(), ['area_id' => 'area_id']);
+        return $this->hasMany(Orders::className(), ['area_id' => 'area_id']);
     }
 
     /**
@@ -64,13 +67,5 @@ class Area extends \yii\db\ActiveRecord
     public function getPlots()
     {
         return $this->hasMany(Plot::className(), ['area_id' => 'area_id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getRates()
-    {
-        return $this->hasMany(Rate::className(), ['area_id' => 'area_id']);
     }
 }

@@ -18,8 +18,8 @@ class SearchArea extends Area
     public function rules()
     {
         return [
-            [['area_id', 'total_area'], 'integer'],
-            [['name'], 'safe'],
+            [['area_id', 'total_area', 'rate'], 'integer'],
+            [['name', 'flag'], 'safe'],
         ];
     }
 
@@ -47,11 +47,6 @@ class SearchArea extends Area
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'sort' => [
-                'defaultOrder' => [
-                    'area_id' => SORT_DESC,
-                ]
-            ]
         ]);
 
         $this->load($params);
@@ -66,9 +61,13 @@ class SearchArea extends Area
         $query->andFilterWhere([
             'area_id' => $this->area_id,
             'total_area' => $this->total_area,
+            'rate' => $this->rate,
         ]);
 
-        $query->andFilterWhere(['like', 'name', $this->name]);
+        $query->andFilterWhere(['like', 'name', $this->name])
+            ->andFilterWhere(['like', 'flag', $this->flag]);
+        $query->andWhere(['flag' => '1']);
+        $query->orderBy(['flag' => SORT_DESC]);
 
         return $dataProvider;
     }

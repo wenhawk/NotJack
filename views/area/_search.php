@@ -21,9 +21,13 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'total_area') ?>
 
+    <?= $form->field($model, 'rate') ?>
+
+    <?= $form->field($model, 'flag') ?>
+
     <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-success']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
+        <?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

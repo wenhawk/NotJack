@@ -91,3 +91,9 @@ alter table orders add CONSTRAINT orders_fk1 FOREIGN KEY (next_order_id) REFEREN
 alter table orders add transfer_url text;
 
 alter table users add mobile varchar(11) not null;
+
+========
+
+ALTER TABLE `area` ADD `rate` INT(11) NOT NULL AFTER `total_area`;
+
+ALTER TABLE `area` ADD `flag` TINYINT NOT NULL AFTER `rate`;

@@ -93,7 +93,7 @@ class OrdersController extends Controller
             $model = new Orders();
             $orderRate = new OrderRate();
             $company = Company::find()->all();
-            $area = Area::find()->all();
+            $area = Area::find()->where(['flag' => '1'])->all();
             if ($model->load(Yii::$app->request->post()) && $orderRate->load(Yii::$app->request->post())) {
                 $model->file = UploadedFile::getInstance($model, 'file');
                 if($model->file){
@@ -139,7 +139,7 @@ class OrdersController extends Controller
             $area = Area::find()->all();
             if ($model->load(Yii::$app->request->post()) && $orderRate->load(Yii::$app->request->post())) {
                 $oldOrder = Orders::findOne($model->order_id);
-                
+
                 $model->file = UploadedFile::getInstance($model, 'file');
                 if($model->file){
                     $model->upload();
@@ -222,7 +222,7 @@ class OrdersController extends Controller
                 $log->user_id = Yii::$app->user->identity->user_id;
                 $log->type = 'Edited Unit';
                 $log->save();
-                
+
                 $oldOrderRate = OrderRate::find()->where(['order_id' => $id])->andWhere(['flag' => 1])->one();
                 if($oldOrderRate->start_date != $orderRate->start_date || $oldOrderRate->end_date != $orderRate->end_date || $oldOrderRate->amount1 != $orderRate->amount1 || $oldOrderRate->amount2 != $orderRate->amount2){
                     //Creating new orderRate
