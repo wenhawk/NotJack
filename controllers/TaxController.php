@@ -102,7 +102,7 @@ class TaxController extends Controller
         if (\Yii::$app->user->can('updateTax')){
             $model = $this->findModel($id);
             $model->flag = 0;
-            
+
             $tax = new Tax();
             if ($tax->load(Yii::$app->request->post())) {
                 date_default_timezone_set('Asia/Kolkata');

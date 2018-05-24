@@ -36,20 +36,22 @@ $this->params['breadcrumbs'][] = $this->title;
 			],
             'amount1',
             'amount2',
-            [
-                'attribute' => 'flag',
-                'value' => function($dataProvider){
-                    if($dataProvider->flag == '1'){
-                        return 'Current';
-                    }else{
-                        return 'Old';
-                    }
-                }
-            ],
+
             [
                 'attribute' => 'order_id',
                 'value' => 'order.order_number',
 
+            ],
+            [
+                'label' => 'Status',
+                'attribute' => 'flag',
+                'value' => function($dataProvider){
+                    if($dataProvider->flag == '1'){
+                        return 'Active';
+                    }else{
+                        return 'In-Active';
+                    }
+                }
             ],
 
             ['class' => 'yii\grid\ActionColumn'],
