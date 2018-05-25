@@ -26,7 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
 			[
 				'label' => 'Date',
 				'value' => function($model){
-					return date('d m Y', strtotime($model->start_date));
+					return date('d-m-Y', strtotime($model->start_date));
 				}
 			],
         ],
