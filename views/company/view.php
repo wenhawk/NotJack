@@ -182,19 +182,22 @@ use yii\data\ActiveDataProvider;
               }
             ?>
 			</b>
-		  <?php 
-			$count = Orders::find()->where(['order_number' => $order->order_number])->count();
-			if($count > 1){
-				$date = Orders::find()->where(['order_number' => $order->order_number])->one()->start_date;
-				echo date('d-m-Y', strtotime($date));
-			}else{
-				echo date('d-m-Y', strtotime($order->start_date));
-			}
-		  ?><br></p>
-		  <?php 
-			if($count > 1){
-				echo "<p><b>Transfer Date: </b>". date('d-m-Y', strtotime($order->start_date))."</p>";
-			}
+		  <?php if(Yii::$app->user->can('admin')){ 
+        $count = Orders::find()->where(['order_number' => $order->order_number])->count();
+        if($count > 1){
+          $date = Orders::find()->where(['order_number' => $order->order_number])->one()->start_date;
+          echo date('d-m-Y', strtotime($date));
+        }else{
+          echo date('d-m-Y', strtotime($order->start_date));
+        }
+        ?><br></p>
+        <?php 
+        if($count > 1){
+          echo "<p><b>Transfer Date: </b>". date('d-m-Y', strtotime($order->start_date))."</p>";
+        }
+      }else{
+          echo date('d-m-Y', strtotime($order->start_date));
+      }
 		  ?>
           <p><b>Renewal Date: </b><?=  date('d-m-Y', strtotime($order->end_date)); ?></p><br>
           <p><b>Company: </b><?= $order->company->name ?></p><br>
