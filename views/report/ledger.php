@@ -75,12 +75,12 @@
             $invoice_total += $in->total_amount;
         }
         foreach($payment as $pay){
-            array_push($led, new Ledger($pay->payment_id, $pay->start_date, 'Receipt', $pay->amount, False ));
+            array_push($led, new Ledger($pay->payment_no, $pay->start_date, 'Receipt', $pay->amount, False ));
             $payment_total += $pay->amount;
         } 
         foreach($debit as $deb){
             if($deb->penal > 0){
-                array_push($led, new Ledger("Debit note on receipt ".$deb->payment->payment_id, $deb->invoice->start_date, 'Debit Note',$deb->penal, True ));
+                array_push($led, new Ledger("Debit note on receipt ".$deb->payment->payment_no, $deb->invoice->start_date, 'Debit Note',$deb->penal, True ));
                 $invoice_total += $deb->penal;
             }
             
@@ -105,7 +105,7 @@
                 $creditTotal += $creditAmount;
             }
 			if($record->type == 'Receipt'){
-				echo "<tr> <td>$sr_no</td> <td>". 'GIDC/18-19/000'.$record->particulars ."</td> <td>". date('d-m-Y',strtotime($record->date)) ."</td><td>". $record->type."</td><td>$debitAmount</td><td>$creditAmount</td></tr>";
+				echo "<tr> <td>$sr_no</td> <td>". ''.$record->particulars ."</td> <td>". date('d-m-Y',strtotime($record->date)) ."</td><td>". $record->type."</td><td>$debitAmount</td><td>$creditAmount</td></tr>";
 			}else{
 				echo "<tr> <td>$sr_no</td> <td>". $record->particulars ."</td> <td>". date('d-m-Y',strtotime($record->date)) ."</td><td>". $record->type."</td><td>$debitAmount</td><td>$creditAmount</td></tr>";
 			}
