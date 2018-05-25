@@ -97,3 +97,7 @@ alter table users add mobile varchar(11) not null;
 ALTER TABLE `area` ADD `rate` INT(11) NOT NULL AFTER `total_area`;
 
 ALTER TABLE `area` ADD `flag` TINYINT NOT NULL AFTER `rate`;
+
+========
+
+ALTER TABLE `debit` ADD `flag` INT NOT NULL DEFAULT '1' AFTER `order_id`;

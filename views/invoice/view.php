@@ -44,6 +44,7 @@ use yii\widgets\ActiveForm;
   line-height: 18px;
 }
 </style>
+
 <div class="row">
   <div class="col-md-2 text-right">
     <p><input type="button" class="print-btn btn btn-success"  value="Print" /> <?= "<a class='btn btn-success' href='index.php?r=invoice/mail&id=".$model->invoice_id."' />Send Email</a>"; ?></p>
@@ -68,6 +69,12 @@ use yii\widgets\ActiveForm;
     ?>
   </div>
 </div>
+
+<?php if($model->flag != '1'){?>
+<div class="row">
+  <center><h1>CANCLED</h1></center>
+</div>
+<?php }?>
 <br><br>
 <div class="cover" id="printableArea" style=" padding: 10px;">
 <div class="row">
@@ -230,7 +237,9 @@ use yii\widgets\ActiveForm;
 </div>
 <br>
 <?php if(Yii::$app->user->can('admin') || Yii::$app->user->can('company')){
-  echo "<center><a href='index.php?r=payment/render-payment&id=". $model->invoice_code  ."' class='btn btn-primary text-center'>Pay Online</a></center>";
+  if($model->flag == '1'){
+    echo "<center><a href='index.php?r=payment/render-payment&id=". $model->invoice_code  ."' class='btn btn-primary text-center'>Pay Online</a></center>";
+  }
 } ?>
 <?php
   $script = <<< JS

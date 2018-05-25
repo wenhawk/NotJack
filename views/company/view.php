@@ -182,7 +182,7 @@ use yii\data\ActiveDataProvider;
               }
             ?>
 			</b>
-		  <?php if(Yii::$app->user->can('admin')){ 
+		  <?php if(Yii::$app->user->can('admin')){
         $count = Orders::find()->where(['order_number' => $order->order_number])->count();
         if($count > 1){
           $date = Orders::find()->where(['order_number' => $order->order_number])->one()->start_date;
@@ -191,12 +191,13 @@ use yii\data\ActiveDataProvider;
           echo date('d-m-Y', strtotime($order->start_date));
         }
         ?><br></p>
-        <?php 
+        <?php
         if($count > 1){
           echo "<p><b>Transfer Date: </b>". date('d-m-Y', strtotime($order->start_date))."</p>";
         }
       }else{
           echo date('d-m-Y', strtotime($order->start_date));
+            echo "<p><b>Transfer Date: </b> ------ </p>";
       }
 		  ?>
           <p><b>Renewal Date: </b><?=  date('d-m-Y', strtotime($order->end_date)); ?></p><br>

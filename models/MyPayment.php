@@ -12,6 +12,13 @@ use Yii;
 class MyPayment extends Payment
 {
 
+    public static function getTdsAmount($invoice){
+      $amount = Payment::find()->where(['status' => '1'])
+      ->andWhere(['invoice_id' => $invoice->invoice_id ])
+      ->sum('tds_amount');
+      return $amount;
+    }
+
   public static function generatePaymentCode(){
     date_default_timezone_set('Asia/Kolkata');
     $year = date('Y');
@@ -20,6 +27,7 @@ class MyPayment extends Payment
     $year = intval($year) + 1;
     $invoiceCode = $invoiceCode . '-' . $year;
     $latestPayment = Payment::find()
+    ->where(['status' => '1'])
     ->orderBy(['payment_id' => SORT_DESC])
     ->one();
     if($latestPayment){
@@ -67,22 +75,44 @@ class MyPayment extends Payment
         $totalLeaseRentPaid = MyInvoice::getTotalLeaseRentPaid($order);
         $totalTaxPaid = MyInvoice::getTotalTaxPaid($order);
         $totalTax = MyInvoice::getTotalTax($order);
-        $balanceAmount = $totalAmount + $totalPenal - $totalAmountPaid;
+        $balanceAmount = $totalAmount + $totalPenal - $totalAmountPaid - $totalPenalPaid;
         $balanceTax = $totalTax - $totalTaxPaid;
         $balanceLease = $totalLeaseRent - $totalLeaseRentPaid;
-        // echo'$totalPenal '.$totalPenal.'<br>';
-        // echo'$totalPenalPaid '.$totalPenalPaid.'<br>';
-        // echo'$balancePenal '.$balanceAmount.'<br>';
-        // echo'$pi '.$pi.'<br>';
-        // echo'$balanceAmount'.$balanceAmount.'<br>';
-        // echo'$balancePenal'.$balancePenal.'<br>';
-        // echo'$totalAmount'.$totalAmount.'<br>';
-        // echo'$totalAmountPaid'.$totalAmountPaid.'<br>';
-        // echo'$this->amount'.$this->amount.'<br>';
-        if($this->amount > $balanceAmount ){ //Trying to pay extra
+         echo'$totalPenal '.$totalPenal.'<br>';
+         echo'$totalPenalPaid '.$totalPenalPaid.'<br>';
+         echo'$balancePenal '.$balanceAmount.'<br>';
+         echo'$pi '.$pi.'<br>';
+         echo'$balanceAmount'.$balanceAmount.'<br>';
+         echo'$balancePenal'.$balancePenal.'<br>';
+         echo'$totalAmount'.$totalAmount.'<br>';
+         echo'$totalAmountPaid'.$totalAmountPaid.'<br>';
+         echo'$this->amount'.$this->amount.'<br><br>';
+         echo'$totalTax'.$totalTax.'<br>';
+         echo'$totalTaxPaid'.$totalTaxPaid.'<br>';
+         echo'$totalLeaseRent'.$totalLeaseRent.'<br>';
+         echo'$totalLeaseRentPaid'.$totalLeaseRentPaid.'<br>';
+        $tds_paid = MyPayment::getTdsAmount($invoice);
+        if($this->tds_amount > 0 && $this->tds_amount){
+          $percent = ($this->tds_amount * 100) / $invoice->current_lease_rent;
+          echo round($percent,2).'<br>';
+          if($percent < 9.0 || $percent > 10.1 ){
+            Yii::$app->session->setFlash('danger', "TDS AMOUNT SHOULD BE BETWEEN 9% to 10.1%, Your Amount: ".round($percent,2));
+            return $controller->redirect(['invoice/view' ,'id' => $invoice->invoice_id]);
+          }
+          if($tds_paid > 0 ){
+            Yii::$app->session->setFlash('danger', "TDS ALREDY PAID ON INVOICE");
+            return $controller->redirect(['invoice/view' ,'id' => $invoice->invoice_id]);
+          }
+        }else{
+          $this->tds_amount = 0;
+        }
+        echo '$balanceAmount'.$balanceAmount.'<br>';
+        $this->amount = $this->amount + $this->tds_amount;
+        if(($this->amount) > $balanceAmount){ //Trying to pay extra
           Yii::$app->session->setFlash('danger', "TRYING TO PAY EXTRA");
           return $controller->redirect(['invoice/view' ,'id' => $invoice->invoice_id]);
         }
+
         $totalTaxAndLease =  $balanceTax + $balanceLease;
         $totalTax = $totalTax - $totalTaxPaid;
         $totalLeaseRent = $totalLeaseRent - $totalLeaseRentPaid;
@@ -93,35 +123,35 @@ class MyPayment extends Payment
           $taxPerectage = 0;
           $leasePerectage = 0;
         }
-         echo'$totalTaxAndLease'.$totalTaxAndLease.'<br>';
-         echo'$taxPerectage'.$taxPerectage.'<br>';
-         echo'$leasePerectage'.$leasePerectage.'<br>';
+          echo '$totalTaxAndLease'.$totalTaxAndLease.'<br>';
+          echo '$taxPerectage'.$taxPerectage.'<br>';
+          echo '$leasePerectage'.$leasePerectage.'<br>';
         if($this->amount >= ($totalTaxAndLease)){
               $totalTaxPaying = $balanceTax;
               $totalLeasePaying = $balanceLease;
         if($balanceAmount == $this->amount){
-               echo'FULL payment LR + GST + Penal  <br>';
+                echo 'FULL payment LR + GST + Penal  <br>';
               $this->penal = $balancePenal;
               $this->balance_amount = 0;
           }else{
-               echo'FULL LR + GST  PARTAL Peenal <br>';
+                echo 'FULL LR + GST  PARTAL Peenal <br>';
                 $balancePenalNotPaid = $this->amount - ($balanceTax + $balanceLease);
                 $this->penal = $balancePenalNotPaid;
-                 echo'$this->amount '.$this->amount .'<br>';
-                 echo'$balanceTax '.$balanceTax .'<br>';
-                 echo'$balanceLease '.$balanceLease .'<br>';
-                 echo'$this->penal '.$this->penal.'<br>';
-                 echo'$balancePenalNotPaid '.$balancePenalNotPaid.'<br>';
+                  echo '$this->amount '.$this->amount .'<br>';
+                  echo '$balanceTax '.$balanceTax .'<br>';
+                  echo '$balanceLease '.$balanceLease .'<br>';
+                  echo '$this->penal '.$this->penal.'<br>';
+                  echo ' $balancePenalNotPaid '.$balancePenalNotPaid.'<br>';
           }
         }else{
-           echo'PARTAL LR + GST Cleared <br>';
+         echo 'PARTAL LR + GST Cleared <br>';
           $totalTaxAndLease = $this->amount;
           $totalTaxPaying = ($taxPerectage/100) * $totalTaxAndLease;
           $totalLeasePaying = ($leasePerectage/100) * $totalTaxAndLease;
           $this->penal = 0;
         }
-         echo'$totalTaxPaying'.$totalTaxPaying.'<br>';
-         echo'$totalLeasePaying'.$totalLeasePaying.'<br>';
+         echo '$totalTaxPaying'.$totalTaxPaying.'<br>';
+         echo '$totalLeasePaying'.$totalLeasePaying.'<br>';
         $this->lease_rent = round($totalLeasePaying);
         $this->tax = round($totalTaxPaying);
         $this->file = UploadedFile::getInstance($this, 'file');
@@ -142,7 +172,7 @@ class MyPayment extends Payment
             $debit->payment_id = $this->payment_id;
             $debit->save(False);
           }
-        // echo'$this->lease_rent'.$this->lease_rent.'<br>';
+        // // echo '$this->lease_rent'.$this->lease_rent.'<br>';
       }
     }
 

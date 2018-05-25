@@ -52,7 +52,7 @@ class InvoiceController extends Controller
     public function actionGenerate($order_id){
               $order =  Orders::findOne($order_id);
               $invoice = MyInvoice::generateInvoice($order);
-              return $this->redirect(['view','id' => $invoice->invoice_id]);
+              //return $this->redirect(['view','id' => $invoice->invoice_id]);
     }
 
 
@@ -76,7 +76,7 @@ class InvoiceController extends Controller
             }catch(\Swift_TransportException $e){
                 $response = $e->getMessage() ;
             }catch(\Exception $e){
-                echo "Mail failed";
+                 echo "Mail failed";
             }
             $model->email_status = $status;
             $model->save(false);
@@ -182,7 +182,7 @@ class InvoiceController extends Controller
         //     throw new \yii\web\ForbiddenHttpException;
         // }
         MyInvoice::createInvoices();
-        return $this->render('invoice-generated');
+        //return $this->render('invoice-generated');
     }
 
     /**
@@ -196,8 +196,25 @@ class InvoiceController extends Controller
     {
         if (\Yii::$app->user->can('deleteInvoice')){
             $invoice = Invoice::findOne($id);
-            $invoice->flag = '0';
-            $invoice->save(False);
+            $latestInvoice =  Invoice::find()->where(['order_id' => $invoice->order_id ])
+            ->orderBy(['invoice_id' => SORT_DESC])->one();
+            if($invoice->invoice_id == $latestInvoice->invoice_id){
+              $invoice->flag = '0';
+              $invoice->save(False);
+              $payments = $invoice->payments;
+              foreach($payments as $pay){
+                $pay->status = '0';
+                $pay->save();
+              }
+              $debits = $invoice->debits;
+              foreach($debits as $deb){
+                $deb->flag = '0';
+                $deb->save();
+              }
+            }else{
+              Yii::$app->session->setFlash('danger', "CANNOT DELETE PREVIOUS INVOICE");
+              return $this->redirect(['index']);
+            }
             return $this->redirect(['index']);
         }else{
             throw new \yii\web\ForbiddenHttpException;
