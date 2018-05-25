@@ -110,23 +110,21 @@ class PaymentController extends Controller
     public function actionRenderPayment($id){
         date_default_timezone_set('Asia/Kolkata');
         $model = new MyPayment();
-        $invoice = Invoice::find()->where(['invoice_code' => $id])->one();
+        $invoice = MyInvoice::find()->where(['invoice_code' => $id])->one();
         $order = $invoice->order;
         $interest =  MyInvoice::getCurrentInterest();
-        if(!$model){
+        if(!$invoice){
             throw new \yii\web\ForbiddenHttpException;
         }
         $totalAmount = MyInvoice::getTotalAmount($order);
-        $totalAmountPaid = MyPayment::getTotalAmountPaid($order);
-        $totalPenal = MyInvoice::getTotalPenal($order);
-        $totalPenalPaid = MyInvoice::getTotalPenalPaid($order);
+        $totalAmountPaid = $invoice->getTotalAmountOnInvoicePaid();
         $diffDate  = MyInvoice::getDateDifference($invoice->due_date); //TODO
-        //$diffDate  = 100;
         $totalLeaseRent = MyInvoice::getTotalLeaseRent($order);
         $totalLeaseRentPaid = MyInvoice::getTotalLeaseRentPaid($order);
         $totalTaxPaid = MyInvoice::getTotalTaxPaid($order);
         $totalTax = MyInvoice::getTotalTax($order);
         $penalAmount = 0;
+        //$diffDate = 100;
         if( $diffDate > 0 ){
           $penalAmount = MyPayment::calculatePenalInterest($order,$interest,$diffDate);
         }
@@ -135,9 +133,8 @@ class PaymentController extends Controller
         $model->order_id = $order->order_id;
         $model->penal = $penalAmount;
         $model->lease_rent = $totalLeaseRent - $totalLeaseRentPaid;
-        $model->tax = $totalTax - $totalTaxPaid;
-        $balancePenal = $totalPenal + $penalAmount - $totalPenalPaid;
-        $balanceAmount = $totalAmount - $totalAmountPaid + $balancePenal +   $totalPenalPaid;
+        $model->tax = $totalTax - $totalTaxPaid ;
+        $balanceAmount = $totalAmount + $penalAmount - $totalAmountPaid ;
         return $this->render('create', [
                 'invoice' => $invoice,
                 'balanceAmount' => $balanceAmount,

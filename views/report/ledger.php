@@ -1,4 +1,4 @@
-<?php 
+<?php
     use app\models\Ledger;
     use yii\helpers\Html;
 ?>
@@ -63,7 +63,7 @@
         <td>Debit</td>
         <td>Credit</td>
     </thead>
-    <?php 
+    <?php
         $status = True;
         $invoice_i = 0;
         $payment_i = 0;
@@ -75,16 +75,14 @@
             $invoice_total += $in->total_amount;
         }
         foreach($payment as $pay){
-            array_push($led, new Ledger($pay->payment_id, $pay->start_date, 'Receipt', $pay->amount, False ));
+            array_push($led, new Ledger($pay->payment_no, $pay->start_date, 'Receipt', $pay->amount, False ));
             $payment_total += $pay->amount;
-        } 
+        }
         foreach($debit as $deb){
-            if($deb->penal > 0){
-                array_push($led, new Ledger($deb->debit_id, $deb->start_date, $deb->penal, True ));
+                $date=date('d-m-Y',strtotime($deb->invoice->start_date));
+                array_push($led, new Ledger($deb->debit_id, $date , 'Debit Note',$deb->penal, True ));
                 $invoice_total += $deb->penal;
-            }
-            
-        } 
+        }
         function cmp($a, $b)
         {
             return strcmp($a->date, $b->date);
@@ -98,18 +96,17 @@
             $creditAmount = 0;
             $debitAmount = 0;
             if($record->isCredit){
-                $debitAmount = $record->amount; 
+                $debitAmount = $record->amount;
                 $debitTotal += $debitAmount;
             }else{
-                $creditAmount = $record->amount; 
+                $creditAmount = $record->amount;
                 $creditTotal += $creditAmount;
             }
-			if($record->type == 'Receipt'){
-				echo "<tr> <td>$sr_no</td> <td>". 'GIDC/18-19/000'.$record->particulars ."</td> <td>". date('d-m-Y',strtotime($record->date)) ."</td><td>". $record->type."</td><td>$debitAmount</td><td>$creditAmount</td></tr>";
-			}else{
-				echo "<tr> <td>$sr_no</td> <td>". $record->particulars ."</td> <td>". date('d-m-Y',strtotime($record->date)) ."</td><td>". $record->type."</td><td>$debitAmount</td><td>$creditAmount</td></tr>";
-			}
-            
+
+
+				echo "<tr> <td>$sr_no</td> <td>". $record->particulars ."</td> <td>".date('d-m-Y',strtotime($record->date)) ."</td><td>". $record->type."</td><td>$debitAmount</td><td>$creditAmount</td></tr>";
+
+
             $sr_no = $sr_no + 1;
         }
         $outstanding = ($invoice_total - $payment_total);

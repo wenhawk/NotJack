@@ -34,7 +34,16 @@ $this->title = 'Interests';
 					return date('d-m-Y', strtotime($dataProvider->start_date));
 				}
 			],
-            'flag',
+        [
+          'label' => 'Status',
+          'value' => function($dataProvider){
+            if($dataProvider->flag == '1'){
+              return 'Active';
+            }else{
+              return 'In-Active';
+            }
+          }
+        ],
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

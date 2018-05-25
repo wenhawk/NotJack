@@ -13,14 +13,14 @@ class Ledger extends \yii\base\Model
     public $particulars;
     public $amount;
     public $date;
-	public $type;
+	  public $type;
     public $isCredit = False;
 
     function __construct($particulars, $date, $type, $amount, $isCredit) {
         $this->particulars = $particulars;
         $this->amount = $amount;
         $this->isCredit = $isCredit;
-		$this->type = $type;
+		    $this->type = $type;
         $this->date = $date;
     }
 

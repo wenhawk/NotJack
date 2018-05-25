@@ -71,21 +71,22 @@ class MyInvoice extends Invoice
     public static function getTotalTaxPaid($order){
       $amount = Payment::find()->where(['order_id' => $order->order_id])
       ->sum('tax');
+      echo 'TotalTaxPaid'.$amount.'<br>';
       return $amount;
     }
 
     public static function getTotalTax($order){
       $amount1 = Invoice::find()->where(['order_id' => $order->order_id])
-      ->sum('prev_tax');
-      $amount2 = Invoice::find()->where(['order_id' => $order->order_id])
       ->sum('current_tax');
-      return $amount1 + $amount2;
+      echo 'TotalTax'.($amount1).'<br>';
+      return $amount1;
     }
 
     public static function getTotalLeaseRent($order){
       $amount = Invoice::find()->where(['order_id' => $order->order_id])
       ->andWhere(['flag' => 1])
       ->sum('current_lease_rent');
+      echo 'TotalLeaseRent'.$amount.'<br>';
       return $amount;
     }
 
@@ -98,6 +99,7 @@ class MyInvoice extends Invoice
     public static function getTotalLeaseRentPaid($order){
       $amount = Payment::find()->where(['order_id' => $order->order_id])
       ->sum('lease_rent');
+      echo 'TotalLeaseRentPaid'.$amount.'<br>';
       return $amount;
     }
 
@@ -110,15 +112,17 @@ class MyInvoice extends Invoice
     public static function getTotalAmount($order){
       $invoice = Invoice::find()->where(['order_id' => $order->order_id])
       ->orderBy(['invoice_id' => SORT_DESC])->one();
+      echo 'getTotalAmount'.$invoice->total_amount.'<br>';
       return $invoice->total_amount;
     }
 
-    public static function getTotalAmountPaid($order){
-      $amount = Payment::find()->where(['order_id' => $order->order_id])
+    public function getTotalAmountOnInvoicePaid(){
+      $amount = Payment::find()->where(['invoice_id' => $this->invoice_id])
       ->sum('amount');
+      echo 'TotalAmountOnInvoicePaid'.$amount.'<br>';
+      echo '$this->invoice_id'.$this->invoice_id.'<br>';
       return $amount;
     }
-
 
 
     public static function calculateBalancePenalAmount($order){
@@ -145,8 +149,8 @@ class MyInvoice extends Invoice
 
     public static function generateInvoice($order){
       date_default_timezone_set('Asia/Kolkata');
-      $prevInvoice = Invoice::find()->where(['order_id' => $order->order_id])
-      ->orderBy(['order_id' => SORT_DESC ])->one();
+      $prevInvoice = MyInvoice::find()->where(['order_id' => $order->order_id])
+      ->orderBy(['invoice_id' => SORT_DESC ])->one();
 
       $invoice = new Invoice();
       $order_rate = MyInvoice::getCurrentOrderRate($order);
@@ -190,7 +194,7 @@ class MyInvoice extends Invoice
         $balancePenal = MyInvoice::calculateBalancePenalAmount($order);
         $invoice->prev_interest = round($penalAmount+$balancePenal);
         $totalAmount = MyInvoice::getTotalAmount($order);
-        $totalAmountPaid = MyInvoice::getTotalAmountPaid($order);
+        $totalAmountPaid = $prevInvoice->getTotalAmountOnInvoicePaid();
         $due = $totalAmount - $totalAmountPaid;
         $invoice->prev_dues_total = $due + $invoice->prev_interest;
         $invoice->current_lease_rent = $order_rate->amount1;

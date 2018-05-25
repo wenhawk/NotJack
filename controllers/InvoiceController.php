@@ -11,6 +11,7 @@ use app\models\Tax;
 use app\models\Interest;
 use app\models\OrderRate;
 use app\models\Payment;
+use app\models\MyPayment;
 use app\models\Rate;
 use app\models\Invoice;
 use app\models\MyInvoice;
@@ -164,7 +165,7 @@ class InvoiceController extends Controller
     public function actionUpdate()
     {
 
-         MyInvoice::createInvoices();
+
         //MyInvoice::generateInvoiceCode('VER');
 
         // if (\Yii::$app->user->can('updateInvoice')){
@@ -180,6 +181,7 @@ class InvoiceController extends Controller
         // }else{
         //     throw new \yii\web\ForbiddenHttpException;
         // }
+        MyInvoice::createInvoices();
         return $this->render('invoice-generated');
     }
 
