@@ -43,6 +43,11 @@
 </form>
 <br>
 <br>
+
+<? if($post && $orders == null ) { ?>
+  <center><h2><?= $message ?></h2></center>
+<? } ?>
+
 <?php if($orders) { ?>
   <table class="table">
     <th>Unit ID</th>
@@ -60,5 +65,7 @@
 
     <?php } ?>
   </table>
+
+
 
 <?php } ?>

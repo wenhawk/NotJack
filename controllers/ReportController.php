@@ -59,15 +59,21 @@ class ReportController extends Controller
     public function actionRenewal()
     {
       $orders = null;
+      $message = 'No Records Found';
+      $post  = False;
       if(Yii::$app->request->post()){
           $to = Yii::$app->request->post('to_date');
           $from = Yii::$app->request->post('from_date');
           $orders = Orders::find()
           ->where(['between','end_date',$from,$to])
           ->all();
+          $post = True;
         }
+
         return $this->render('renewal',[
-          'orders' => $orders
+          'orders' => $orders,
+          'message' => $message,
+          'post' => $post
         ]);
     }
 
