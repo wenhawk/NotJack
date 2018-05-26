@@ -114,18 +114,18 @@
             echo "<tr> <td>$sr_no</td> <td>". $record->particulars ."</td> <td>".date('d-m-Y',strtotime($record->date)) ."</td><td>". $record->type."</td><td>$amountD</td><td>$amountC</td><td>".$record->inoviceTotal."</td></tr>";
           }else{
             if($record->type == 'Debit Note'){
-              echo "<tr> <td>$sr_no</td> <td>DEBIT/000". $record->particulars ."</td> <td>".date('d-m-Y',strtotime($record->date)) ."</td><td>". $record->type."</td><td>$amountD</td><td>$amountC</td>td>".$record->inoviceTotal."</td></tr>";
+              echo "<tr> <td>$sr_no</td> <td>DEBIT/000". $record->particulars ."</td> <td>".date('d-m-Y',strtotime($record->date)) ."</td><td>". $record->type."</td><td>$amountD</td><td>$amountC</td><td>".$record->inoviceTotal."</td></tr>";
             }else{
-              echo "<tr> <td>$sr_no</td> <td>". $record->particulars ."</td> <td>".date('d-m-Y',strtotime($record->date)) ."</td><td>". $record->type."</td><td>$amountD</td><td>$amountC</td>td>".$record->inoviceTotal."</td></tr>";
+              echo "<tr> <td>$sr_no</td> <td>". $record->particulars ."</td> <td>".date('d-m-Y',strtotime($record->date)) ."</td><td>". $record->type."</td><td>$amountD</td><td>$amountC</td><td>".$record->inoviceTotal."</td></tr>";
             }
 
           }
 
         }else{
           if($record->type == 'Debit Note'){
-            echo "<tr> <td>$sr_no</td> <td>DEBIT/000". $record->particulars ."</td> <td>".date('d-m-Y',strtotime($record->date)) ."</td><td>". $record->type." JV </td><td>$amountD</td><td>$amountC</td>td>".$record->inoviceTotal."</td></tr>";
+            echo "<tr> <td>$sr_no</td> <td>DEBIT/000". $record->particulars ."</td> <td>".date('d-m-Y',strtotime($record->date)) ."</td><td>". $record->type." JV </td><td>$amountD</td><td>$amountC</td><td>".$record->inoviceTotal."</td></tr>";
           }else{
-            echo "<tr> <td>$sr_no</td> <td>". $record->particulars ."</td> <td>".date('d-m-Y',strtotime($record->date)) ."</td><td>". $record->type." JV </td><td>$amountD</td><td>$amountC</td>td>".$record->inoviceTotal."</td></tr>";
+            echo "<tr> <td>$sr_no</td> <td>". $record->particulars ."</td> <td>".date('d-m-Y',strtotime($record->date)) ."</td><td>". $record->type." JV </td><td>$amountD</td><td>$amountC</td><td>".$record->inoviceTotal."</td></tr>";
           }
 
         }
