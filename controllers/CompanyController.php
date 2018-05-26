@@ -92,7 +92,6 @@ class CompanyController extends Controller
         if (\Yii::$app->user->can('ViewCompany', ['company' => $model])){
             $model = $this->findModel($id);
             $orders = Orders::find()->where(['company_id' => $model->company_id])->all();
-
             return $this->render('view', [
                 'model' => $model,
                 'orders' => $orders
@@ -126,13 +125,13 @@ class CompanyController extends Controller
             }
 
             if ($model->load(Yii::$app->request->post()) && $user->load(Yii::$app->request->post())) {
-                
+
                 $model->file = UploadedFile::getInstance($model, 'file');
                 if($model->file){
                     $model->upload();
                 }
-                
-                
+
+
                 $user->password = Yii::$app->getSecurity()->generatePasswordHash($user->password);
                 $user->type = 'company';
                 $user->save(false);
@@ -164,7 +163,7 @@ class CompanyController extends Controller
     {
         $model = $this->findModel($id);
         if (\Yii::$app->user->can('ViewCompany', ['company' => $model])){
-            
+
             $user = Users::findOne($model->user_id);
             $user->password = "";
             if (Yii::$app->request->isAjax && $model->load(Yii::$app->request->post())  && $user->load(Yii::$app->request->post())) {

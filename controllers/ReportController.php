@@ -10,11 +10,13 @@ use app\models\Log;
 use app\models\Debit;
 use yii\helpers\Json;
 use yii\web\Controller;
+use app\models\Orders;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use app\models\Invoice;
 use app\models\InvoiceReport;
 use app\models\InvoiceSearchData;
+
 
 /**
  * RateController implements the CRUD actions for Rate model.
@@ -31,26 +33,41 @@ class ReportController extends Controller
                 $searchModel->to_date = $model->to_date;
                 $searchModel->search_key = $model->search_key;
                 $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-                
             }else{
                 echo "didngt load";
                 $searchModel = new InvoiceReport();
                 $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-                
+
             }
             return $this->render('invoice-report', [
                 'dataProvider' => $dataProvider,
                 'model' => $model,
             ]);
-            
+
         }else{
             throw new \yii\web\ForbiddenHttpException;
         }
     }
+
     public function actionView($id)
     {
         return $this->redirect([
             'invoice/view', 'id' => $id
+        ]);
+    }
+
+    public function actionRenewal()
+    {
+      $orders = null;
+      if(Yii::$app->request->post()){
+          $to = Yii::$app->request->post('to_date');
+          $from = Yii::$app->request->post('from_date');
+          $orders = Orders::find()
+          ->where(['between','end_date',$from,$to])
+          ->all();
+        }
+        return $this->render('renewal',[
+          'orders' => $orders
         ]);
     }
 
@@ -71,27 +88,27 @@ class ReportController extends Controller
                 $to = Yii::$app->request->post('to_date');
                 $from = Yii::$app->request->post('from_date');
                 $order_number = Yii::$app->request->post('order_number');
-                
+
                 if($to != '' && $from != ''){
                     echo 'Query with dates';
                     $invoice = Invoice::find()->orderBy('start_date')
                     ->where(['between', 'start_date', $from, $to ]);
-                    $payment = Payment::find()->where(['status' => 1])->orderBy('start_date')
+                    $payment = Payment::find()->orderBy('start_date')
                     ->where(['between', 'start_date', $from, $to ]);
                     $debit = Debit::find()->orderBy('start_date')
                     ->where(['between', 'start_date', $from, $to ]);
                 }else{
                     echo 'Query without dates';
                     $invoice = Invoice::find()->orderBy('start_date');
-                    $payment = Payment::find()->where(['status' => 1])->orderBy('start_date'); 
-                    $debit = Debit::find()->orderBy('start_date'); 
+                    $payment = Payment::find()->orderBy('start_date');
+                    $debit = Debit::find()->orderBy('start_date');
                 }
                 if($order_number != ""){
                     $invoice->joinWith('order');
                     $payment->joinWith('order');
                     $invoice->andFilterWhere(['like', 'order_number', $order_number]);
                     $payment->andFilterWhere(['like', 'order_number', $order_number]);
-                    
+
                     $invoice = $invoice->all();
                     $payment = $payment->all();
                     $order_id = 0;
@@ -109,17 +126,17 @@ class ReportController extends Controller
                 $order_number = Yii::$app->request->get('order_id');
                 echo 'only';
                 $invoice = Invoice::find()->where(['order_id' => $order_number])->all();
-                $payment = Payment::find()->where(['order_id' => $order_number])->andWhere(['status' => 1])->all();   
+                $payment = Payment::find()->where(['order_id' => $order_number])->all();
                 $order_id = 0;
                 foreach($invoice as $in){
                     $order_id = $in->order_id;
-                }   
-                $debit = Debit::find()->where(['order_id' => $order_id])->all();                
+                }
+                $debit = Debit::find()->where(['order_id' => $order_id])->all();
             }else{
                 echo 'Normal';
                 $invoice = Invoice::find()->orderBy('start_date')->all();
-                $payment = Payment::find()->where(['status' => 1])->orderBy('start_date')->all();
-                $debit = Debit::find()->all();  
+                $payment = Payment::find()->orderBy('start_date')->all();
+                $debit = Debit::find()->all();
             }
             return $this->render(
                 'ledger',
@@ -134,6 +151,6 @@ class ReportController extends Controller
         }else{
             throw new \yii\web\ForbiddenHttpException;
         }
-        
+
     }
 }

@@ -72,7 +72,9 @@ class PaymentController extends Controller
         $model = Payment::findOne($id);
         if (\Yii::$app->user->can('viewPayment', ['payment' => $model])){
             $invoice = $model->invoice;
-              $debit = Debit::find()->where(['payment_id' => $model->payment_id])->one();
+              $debit = Debit::find()->where(['payment_id' => $model->payment_id])
+              ->andWhere(['flag' => '1'])
+              ->one();
             return $this->render('view', [
                 'model' => $this->findModel($id),
                 'invoice' => $invoice,
@@ -94,7 +96,7 @@ class PaymentController extends Controller
             $model = new MyPayment();
             if(! \Yii::$app->user->can('company')){
                 $model->generatePayment('1',$this);
-                return $this->redirect(['view', 'id' => $model->payment_id ]);
+                //return $this->redirect(['view', 'id' => $model->payment_id ]);
             }else{
                 $model->generatePayment('0',$this);
                 return $this->render('online-payment', [
@@ -110,23 +112,22 @@ class PaymentController extends Controller
     public function actionRenderPayment($id){
         date_default_timezone_set('Asia/Kolkata');
         $model = new MyPayment();
-        $invoice = Invoice::find()->where(['invoice_code' => $id])->one();
+        $invoice = MyInvoice::find()->where(['invoice_code' => $id])->one();
         $order = $invoice->order;
         $interest =  MyInvoice::getCurrentInterest();
-        if(!$model){
+        if(!$invoice){
             throw new \yii\web\ForbiddenHttpException;
         }
+        $totalPenal = $invoice->getTotalPenalForInvoice();
         $totalAmount = MyInvoice::getTotalAmount($order);
-        $totalAmountPaid = MyPayment::getTotalAmountPaid($order);
-        $totalPenal = MyInvoice::getTotalPenal($order);
-        $totalPenalPaid = MyInvoice::getTotalPenalPaid($order);
+        $totalAmountPaid = $invoice->getTotalAmountOnInvoicePaid();
         $diffDate  = MyInvoice::getDateDifference($invoice->due_date); //TODO
-        //$diffDate  = 100;
         $totalLeaseRent = MyInvoice::getTotalLeaseRent($order);
         $totalLeaseRentPaid = MyInvoice::getTotalLeaseRentPaid($order);
         $totalTaxPaid = MyInvoice::getTotalTaxPaid($order);
         $totalTax = MyInvoice::getTotalTax($order);
         $penalAmount = 0;
+        $diffDate = 100;
         if( $diffDate > 0 ){
           $penalAmount = MyPayment::calculatePenalInterest($order,$interest,$diffDate);
         }
@@ -135,9 +136,13 @@ class PaymentController extends Controller
         $model->order_id = $order->order_id;
         $model->penal = $penalAmount;
         $model->lease_rent = $totalLeaseRent - $totalLeaseRentPaid;
-        $model->tax = $totalTax - $totalTaxPaid;
-        $balancePenal = $totalPenal + $penalAmount - $totalPenalPaid;
-        $balanceAmount = $totalAmount - $totalAmountPaid + $balancePenal +   $totalPenalPaid;
+        $model->tax = $totalTax - $totalTaxPaid ;
+        $tds_paid = MyPayment::getTdsAmount($invoice);
+        $balanceAmount = $totalAmount - $totalAmountPaid + $totalPenal + $penalAmount;
+        echo '$totalAmount'.$totalAmount.'<br>';
+        echo '$totalAmountPaid'.$totalAmountPaid.'<br>';
+        echo '$totalPenal'.$totalPenal.'<br>';
+        echo '$balanceAmount'.$balanceAmount.'<br>';
         return $this->render('create', [
                 'invoice' => $invoice,
                 'balanceAmount' => $balanceAmount,
@@ -151,7 +156,7 @@ class PaymentController extends Controller
         if (\Yii::$app->user->can('searchInvoice')){
             $model_invoice = new Invoice();
             if ($model_invoice->load(Yii::$app->request->post())) {  /* || Yii::$app->request->get() */
-                // echo$model_invoice->invoice_code;
+                // echo $model_invoice->invoice_code;
                 return $this->redirect(['render-payment', 'id' => $model_invoice->invoice_code]);
           }else{
             return $this->render('search', [
@@ -213,8 +218,9 @@ class PaymentController extends Controller
     public function actionDelete($id)
     {
         if (\Yii::$app->user->can('deletePayment')){
-            $this->findModel($id)->delete();
-
+            $payment = Payment::findOne($id);
+            $payment->status = '0';
+            $payment->save();
             return $this->redirect(['index']);
         }else{
             throw new \yii\web\ForbiddenHttpException;

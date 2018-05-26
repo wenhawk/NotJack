@@ -69,7 +69,7 @@ class SearchPayment extends Payment
 
         $query->andFilterWhere(['like', 'mode', $this->mode]);
         $query->andFilterWhere(['like', 'invoice.invoice_code', $this->invoice_id]);
-
+        $query->andWhere(['status' => '1']);        
         $query->orderBy(['payment_id' => SORT_DESC]);
 
         return $dataProvider;

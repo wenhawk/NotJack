@@ -63,6 +63,7 @@ AppAsset::register($this);
                 'items' => [
                      ['label' => 'Invoice Report', 'url' => ['/report/invoice-report']],
                      ['label' => 'Ledger', 'url' => ['/report/ledger']],
+                     ['label' => 'Renewal', 'url' => ['/report/renewal']],
                      ['label' => 'Logs', 'url' => ['/log/index']],
                 ],
             ];
@@ -82,6 +83,7 @@ AppAsset::register($this);
                 'items' => [
                      ['label' => 'Invoice Report', 'url' => ['/report/invoice-report']],
                      ['label' => 'Ledger', 'url' => ['/report/ledger']],
+                     ['label' => 'Renewal', 'url' => ['/report/renewal']],
                      ['label' => 'Logs', 'url' => ['/log/index']],
                 ],
             ];

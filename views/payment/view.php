@@ -127,6 +127,13 @@ use yii\widgets\DetailView;
 
      </tr>
 
+    <?php if($model->tds_amount > 0 && $model->tds_amount) { ?>
+     <tr>
+       <td>TDS Amount</td>
+       <td><?= $model->tds_amount ?></td>
+     </tr>
+   <?php } ?>
+
 
 
      <tr>

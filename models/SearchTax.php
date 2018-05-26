@@ -65,7 +65,6 @@ class SearchTax extends Tax
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name]);
-
         $query->orderBy(['flag' => SORT_DESC  ]);
 
         return $dataProvider;

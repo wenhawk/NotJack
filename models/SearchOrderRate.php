@@ -70,7 +70,6 @@ class SearchOrderRate extends OrderRate
 
         $query->andFilterWhere(['like', 'flag', $this->flag]);
         $query->andFilterWhere(['like', 'orders.order_number', $this->order_id]);
-
         return $dataProvider;
     }
 }
