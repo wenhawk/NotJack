@@ -118,6 +118,19 @@ class PaymentController extends Controller
         if(!$invoice){
             throw new \yii\web\ForbiddenHttpException;
         }
+        $totalPenal = MyInvoice::getTotalPenal($order);
+        $totalPenalPaid = MyInvoice::getTotalPenalPaid($order);
+        $balancePenal = $totalPenal - $totalPenalPaid;
+
+        $totalLeaseRent = MyInvoice::getTotalLeaseRent($order);
+        $totalLeaseRentPaid = MyInvoice::getTotalLeaseRentPaid($order);
+        $balanceLease = $totalLeaseRent - $totalLeaseRentPaid;
+
+        $totalTaxPaid = MyInvoice::getTotalTaxPaid($order);
+        $totalTax = MyInvoice::getTotalTax($order);
+        $balanceTax = $totalTax - $totalTaxPaid;
+
+
         $totalPenal = $invoice->getTotalPenalForInvoice();
         $totalAmount = MyInvoice::getTotalAmount($order);
         $totalAmountPaid = $invoice->getTotalAmountOnInvoicePaid();
@@ -138,7 +151,8 @@ class PaymentController extends Controller
         $model->lease_rent = $totalLeaseRent - $totalLeaseRentPaid;
         $model->tax = $totalTax - $totalTaxPaid ;
         $tds_paid = MyPayment::getTdsAmount($invoice);
-        $balanceAmount = $totalAmount - $totalAmountPaid + $totalPenal + $penalAmount;
+        //$balanceAmount = $totalAmount - $totalAmountPaid + $totalPenal + $penalAmount;
+        $balanceAmount = $balanceTax + $balanceLease + $balancePenal + $penalAmount;
         return $this->render('create', [
                 'invoice' => $invoice,
                 'balanceAmount' => $balanceAmount,

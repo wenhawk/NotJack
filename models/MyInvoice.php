@@ -199,17 +199,31 @@ class MyInvoice extends Invoice
         // CG EMAIL
         $invoice->save();
       }else{
+        $totalPenal = MyInvoice::getTotalPenal($order);
+        $totalPenalPaid = MyInvoice::getTotalPenalPaid($order);
+        $balancePenal = $totalPenal - $totalPenalPaid;
+
+        $totalLeaseRent = MyInvoice::getTotalLeaseRent($order);
+        $totalLeaseRentPaid = MyInvoice::getTotalLeaseRentPaid($order);
+        $balanceLease = $totalLeaseRent - $totalLeaseRentPaid;
+
+        $totalTaxPaid = MyInvoice::getTotalTaxPaid($order);
+        $totalTax = MyInvoice::getTotalTax($order);
+        $balanceTax = $totalTax - $totalTaxPaid;
+
         $invoice->prev_lease_rent = $prevInvoice->current_lease_rent;
         $invoice->start_date = date('Y-m-d');
         $invoice->prev_tax = $prevInvoice->current_tax;
         $penalAmount = MyInvoice::calculatePenalInterest($order,$prevInvoice,$interest);
         $balancePenal = MyInvoice::calculateBalancePenalAmount($order);
+        $balanceAmount = $balanceTax + $balanceLease + $balancePenal + $penalAmount;
         $invoice->prev_interest = round($penalAmount+$balancePenal);
         $totalAmount = MyInvoice::getTotalAmount($order);
         $totalAmount = $totalAmount + $prevInvoice->getTotalPenalForInvoice();
         $totalAmountPaid = $prevInvoice->getTotalAmountOnInvoicePaid();
         $due = $totalAmount - $totalAmountPaid;
-        $invoice->prev_dues_total = $due + $invoice->prev_interest;
+        //$invoice->prev_dues_total = $due + $invoice->prev_interest;
+        $invoice->prev_dues_total = $balanceAmount;
         $invoice->current_lease_rent = $order_rate->amount1;
         $order_rate = MyInvoice::getOrderRate($order);
         $diffDate = MyInvoice::getDateDifference($order_rate->end_date);
