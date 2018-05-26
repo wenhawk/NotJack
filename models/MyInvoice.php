@@ -8,6 +8,7 @@ use app\models\Payment;
 use app\models\Debit;
 use app\models\Interest;
 use app\models\Tax;
+use app\models\Mail;
 
 use Yii;
 
@@ -209,6 +210,8 @@ class MyInvoice extends Invoice
         $invoice->email_status = '0';
         // CG EMAIL
         $invoice->save();
+        $email = new Mail();
+        $email->sendMail($invoice->invoice_id);
       }else{
         $invoice->prev_lease_rent = $prevInvoice->current_lease_rent;
         $invoice->start_date = date('Y-m-d');
@@ -238,6 +241,8 @@ class MyInvoice extends Invoice
         $invoice->email_status = '0';
         // CG EMAIL
         $invoice->save();
+        $email = new Mail();
+        $email->sendMail($invoice->invoice_id);
         //Generate Debit Note
         // echo $penalAmount;
         if($penalAmount > 0){
