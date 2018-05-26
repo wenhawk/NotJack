@@ -21,15 +21,11 @@ class MyInvoice extends Invoice
         ->andWhere(['flag' => '1'])
         ->orderBy(['invoice_id' => SORT_DESC])
         ->one();
-        echo 'hello <br>';
-        echo '$order number'.$order->order_number.'<br>';
-        echo '$invoice'.$invoice->invoice_id.'<br>';
         if($invoice){
         $date = date('Y-m-d', strtotime($invoice->due_date. ''));
         $diffDate = MyInvoice::getDateDifference($date);
         $diffDate = -30;
           if($diffDate == -30 ){
-            echo 'created';
             MyInvoice::generateInvoice($order);
           }
         }
@@ -79,7 +75,6 @@ class MyInvoice extends Invoice
       $amount = Payment::find()->where(['order_id' => $order->order_id])
       ->andWhere(['status' => '1'])
       ->sum('tax');
-      // echo 'TotalTaxPaid'.$amount.'<br>';
       return $amount;
     }
 
@@ -87,7 +82,6 @@ class MyInvoice extends Invoice
       $amount1 = Invoice::find()->where(['order_id' => $order->order_id])
       ->andWhere(['flag' => '1'])
       ->sum('current_tax');
-      // echo 'TotalTax'.($amount1).'<br>';
       return $amount1;
     }
 
@@ -95,7 +89,6 @@ class MyInvoice extends Invoice
       $amount = Invoice::find()->where(['order_id' => $order->order_id])
       ->andWhere(['flag' => 1])
       ->sum('current_lease_rent');
-      // echo 'TotalLeaseRent'.$amount.'<br>';
       return $amount;
     }
 
@@ -103,9 +96,10 @@ class MyInvoice extends Invoice
       $amount = Debit::find()->where(['order_id' => $order->order_id])
       ->andWhere(['flag' => '1'])
       ->sum('penal');
-      echo 'getTotalPenal'.$amount.'<br>';
       return $amount;
     }
+
+
 
     public function getTotalPenalForInvoice(){
       $amount = Debit::find()->where(['invoice_id' => $this->invoice_id])
@@ -118,7 +112,6 @@ class MyInvoice extends Invoice
       $amount = Payment::find()->where(['order_id' => $order->order_id])
       ->andWhere(['status' => '1'])
       ->sum('lease_rent');
-      // echo 'TotalLeaseRentPaid'.$amount.'<br>';
       return $amount;
     }
 
@@ -126,7 +119,6 @@ class MyInvoice extends Invoice
       $amount = Payment::find()->where(['order_id' => $order->order_id])
       ->andWhere(['status' => '1'])
       ->sum('penal');
-      echo 'getTotalPenalPaid'.$amount.'<br>';
       return $amount;
     }
 
@@ -134,7 +126,6 @@ class MyInvoice extends Invoice
       $invoice = Invoice::find()->where(['order_id' => $order->order_id])
       ->andWhere(['flag' => '1'])
       ->orderBy(['invoice_id' => SORT_DESC])->one();
-       echo 'getTotalAmount'.$invoice->total_amount.'<br>';
       return $invoice->total_amount;
     }
 
@@ -142,8 +133,6 @@ class MyInvoice extends Invoice
       $amount1 = Payment::find()->where(['invoice_id' => $this->invoice_id])
       ->andWhere(['status' => '1'])
       ->sum('amount');
-       echo 'TotalAmountOnInvoicePaid'.($amount1).'<br>';
-       echo '$this->invoice_id'.$this->invoice_id.'<br>';
       return $amount1;
     }
 
@@ -239,7 +228,6 @@ class MyInvoice extends Invoice
         // CG EMAIL
         $invoice->save();
         //Generate Debit Note
-        // echo $penalAmount;
         if($penalAmount > 0){
           $debit = new Debit();
           $debit->penal = round($penalAmount);

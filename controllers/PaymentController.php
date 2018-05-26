@@ -139,10 +139,6 @@ class PaymentController extends Controller
         $model->tax = $totalTax - $totalTaxPaid ;
         $tds_paid = MyPayment::getTdsAmount($invoice);
         $balanceAmount = $totalAmount - $totalAmountPaid + $totalPenal + $penalAmount;
-        echo '$totalAmount'.$totalAmount.'<br>';
-        echo '$totalAmountPaid'.$totalAmountPaid.'<br>';
-        echo '$totalPenal'.$totalPenal.'<br>';
-        echo '$balanceAmount'.$balanceAmount.'<br>';
         return $this->render('create', [
                 'invoice' => $invoice,
                 'balanceAmount' => $balanceAmount,
@@ -156,7 +152,7 @@ class PaymentController extends Controller
         if (\Yii::$app->user->can('searchInvoice')){
             $model_invoice = new Invoice();
             if ($model_invoice->load(Yii::$app->request->post())) {  /* || Yii::$app->request->get() */
-                // echo $model_invoice->invoice_code;
+                // echo$model_invoice->invoice_code;
                 return $this->redirect(['render-payment', 'id' => $model_invoice->invoice_code]);
           }else{
             return $this->render('search', [
