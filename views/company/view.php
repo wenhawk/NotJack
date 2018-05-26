@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use app\models\Orders;
 use app\models\Invoice;
 use app\models\Payment;
+use app\models\MyInvoice;
 use app\models\OrderRate;
 use yii\grid\GridView;
 use yii\data\ActiveDataProvider;
@@ -157,7 +158,7 @@ use yii\data\ActiveDataProvider;
       <?php
         if($order->status == 0){
             $transfer = Orders::findOne($order->next_order_id);
-    ?>
+         ?>
             <div class="row" style="border: 1px solid black; padding: 20px;">
                 <h3>Transfer Details</h3>
                 <div class="col-md-6">
@@ -168,7 +169,7 @@ use yii\data\ActiveDataProvider;
                 </div>
 
             </div><br>
-    <?php
+      <?php
        }
     ?>
       <div class="row">
@@ -200,7 +201,15 @@ use yii\data\ActiveDataProvider;
             echo "<p><b>Transfer Date: </b> ------ </p>";
       }
 		  ?>
-          <p><b>Renewal Date: </b><?=  date('d-m-Y', strtotime($order->end_date)); ?></p><br>
+          <?php
+          $date = date('Y-m-d',strtotime($order->end_date.' - 30 days'));
+          $diffDate = MyInvoice::getDateDifference($date);
+          ?>
+          <?php if($diffDate >= 0 ){ ?>
+          <p  style="color:red"><b>Renewal Date: </b><?=  date('d-m-Y', strtotime($order->end_date)); ?></p><br>
+         <?php } else { ?>
+            <p  style="color:black"><b>Renewal Date: </b><?=  date('d-m-Y', strtotime($order->end_date)); ?></p><br>
+         <?php } ?>
           <p><b>Company: </b><?= $order->company->name ?></p><br>
           <p><b>Industrial Area: </b><?= $order->area->name ?></p><br>
         </div>
@@ -242,6 +251,11 @@ use yii\data\ActiveDataProvider;
       <?=
         yii\grid\GridView::widget([
           'dataProvider' => $provider,
+          'rowOptions'=>function($provider){
+            if($provider->flag == '0'){
+                return ['class' => 'danger'];
+            }
+          },
           'columns' => [
             'invoice_code',
             [
@@ -299,6 +313,11 @@ use yii\data\ActiveDataProvider;
       <?=
         yii\grid\GridView::widget([
           'dataProvider' => $provider,
+          'rowOptions'=>function($provider){
+            if($provider->status == '0'){
+                return ['class' => 'danger'];
+            }
+          },
           'columns' => [
             'amount',
             [

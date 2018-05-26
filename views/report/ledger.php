@@ -49,7 +49,7 @@
 <br>
 <br>
 <table class="table table-bordered">
-    <thead>
+    <tr class="active">
         <td>Sr. No</td>
         <td>Particulars</td>
         <td>Date</td>
@@ -57,7 +57,7 @@
         <td>Debit</td>
         <td>Credit</td>
         <td>Total Invoice Amount</td>
-    </thead>
+    </tr>
     <?php
         $status = True;
         $invoice_i = 0;
@@ -125,7 +125,7 @@
           if($record->type == 'Debit Note'){
             echo "<tr> <td>$sr_no</td> <td>DEBIT/000". $record->particulars ."</td> <td>".date('d-m-Y',strtotime($record->date)) ."</td><td>". $record->type." JV </td><td>$amountD</td><td>$amountC</td><td>".$record->inoviceTotal."</td></tr>";
           }else{
-            echo "<tr> <td>$sr_no</td> <td>". $record->particulars ."</td> <td>".date('d-m-Y',strtotime($record->date)) ."</td><td>". $record->type." JV </td><td>$amountD</td><td>$amountC</td><td>".$record->inoviceTotal."</td></tr>";
+            echo "<tr class='danger' > <td>$sr_no</td> <td>". $record->particulars ."</td> <td>".date('d-m-Y',strtotime($record->date)) ."</td><td>". $record->type." JV </td><td>$amountD</td><td>$amountC</td><td>".$record->inoviceTotal."</td></tr>";
           }
 
         }

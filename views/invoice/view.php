@@ -236,9 +236,9 @@ use yii\widgets\ActiveForm;
 </div>
 </div>
 <br>
-<?php if(Yii::$app->user->can('admin') || Yii::$app->user->can('company')){
+<?php if(Yii::$app->user->can('admin')){
   if($model->flag == '1'){
-    echo "<center><a href='index.php?r=payment/render-payment&id=". $model->invoice_code  ."' class='btn btn-primary text-center'>Pay Online</a></center>";
+    echo "<center><a href='index.php?r=payment/render-payment&id=". $model->invoice_code  ."' class='btn btn-primary text-center'>PAY</a></center>";
   }
 } ?>
 <?php

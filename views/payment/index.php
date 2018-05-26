@@ -21,6 +21,11 @@ $this->title = 'Receipt';
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'rowOptions'=>function($dataProvider){
+          if($dataProvider->status == '0'){
+              return ['class' => 'danger'];
+          }
+        },
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             [

@@ -21,6 +21,11 @@ $this->title = 'Interests';
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+        'rowOptions'=>function($dataProvider){
+          if($dataProvider->flag == '0'){
+              return ['class' => 'danger'];
+          }
+        },
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 

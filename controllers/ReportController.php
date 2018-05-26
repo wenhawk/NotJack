@@ -97,17 +97,17 @@ class ReportController extends Controller
 
                 if($to != '' && $from != ''){
                     echo 'Query with dates';
-                    $invoice = Invoice::find()->orderBy('start_date')
-                    ->where(['between', 'start_date', $from, $to ]);
-                    $payment = Payment::find()->orderBy('start_date')
-                    ->where(['between', 'start_date', $from, $to ]);
-                    $debit = Debit::find()->orderBy('start_date')
-                    ->where(['between', 'start_date', $from, $to ]);
+                    $invoice = Invoice::find()->orderBy('invoice.start_date')
+                    ->where(['between', 'invoice.start_date', $from, $to ]);
+                    $payment = Payment::find()->orderBy('payment.start_date')
+                    ->where(['between', 'payment.start_date', $from, $to ]);
+                    $debit = Debit::find()->orderBy('debit.start_date')
+                    ->where(['between', 'debit.start_date', $from, $to ]);
                 }else{
                     echo 'Query without dates';
-                    $invoice = Invoice::find()->orderBy('start_date');
-                    $payment = Payment::find()->orderBy('start_date');
-                    $debit = Debit::find()->orderBy('start_date');
+                    $invoice = Invoice::find()->orderBy('invoice.start_date');
+                    $payment = Payment::find()->orderBy('payment.start_date');
+                    $debit = Debit::find()->orderBy('debit.start_date');
                 }
                 if($order_number != ""){
                     $invoice->joinWith('order');
