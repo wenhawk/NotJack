@@ -24,7 +24,7 @@ class MyInvoice extends Invoice
         if($invoice){
         $date = date('Y-m-d', strtotime($invoice->due_date. ''));
         $diffDate = MyInvoice::getDateDifference($date);
-        $diffDate = -30;
+        echo $diffDate.'<br>';
           if($diffDate == -30 ){
             MyInvoice::generateInvoice($order);
           }
@@ -248,6 +248,7 @@ class MyInvoice extends Invoice
           $debit->invoice_id = $invoice->invoice_id;
           $debit->order_id = $order->order_id;
           $debit->flag = '1';
+          $debit->start_date = date('Y-m-d');
           $debit->save(False);
         }
       }

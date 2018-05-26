@@ -145,6 +145,7 @@ class MyPayment extends Payment
             $debit->invoice_id = $invoice->invoice_id;
             $debit->order_id = $invoice->order->order_id;
             $debit->payment_id = $this->payment_id;
+            $debit->start_date = date('Y-m-d');
             $debit->save(False);
           }
       }

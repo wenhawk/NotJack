@@ -101,3 +101,7 @@ ALTER TABLE `area` ADD `flag` TINYINT NOT NULL AFTER `rate`;
 ========
 
 ALTER TABLE `debit` ADD `flag` INT NOT NULL DEFAULT '1' AFTER `order_id`;
+
+========
+
+ALTER TABLE `debit` ADD `start_date` DATE NULL AFTER `flag`;

@@ -74,7 +74,7 @@
             $payment_total += $pay->amount;
         }
         foreach($debit as $deb){
-                $date=date('d-m-Y',strtotime($deb->invoice->start_date));
+                $date=date('d-m-Y',strtotime($deb->start_date));
                 array_push($led, new Ledger($deb->debit_id, $date , 'Debit Note',$deb->penal, True , $deb->flag,0));
                 $invoice_total += $deb->penal;
         }
