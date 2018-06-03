@@ -198,7 +198,7 @@ class MyInvoice extends Invoice
         $invoice->invoice_code = MyInvoice::generateInvoiceCode($areaCode);
         $invoice->email_status = '0';
         // CG EMAIL
-        $invoice->save();
+        $invoice->save(False);
         $email = new Mail();
         $email->sendMail($invoice->invoice_id);
       }else{
@@ -243,7 +243,8 @@ class MyInvoice extends Invoice
         $invoice->invoice_code = MyInvoice::generateInvoiceCode($areaCode);
         $invoice->email_status = '0';
         // CG EMAIL
-        $invoice->save();
+        $invoice->save(False);
+        echo 'hello'.$invoice->invoice_id;
         $email = new Mail();
         $email->sendMail($invoice->invoice_id);
         //Generate Debit Note
@@ -256,6 +257,91 @@ class MyInvoice extends Invoice
           $debit->start_date = date('Y-m-d');
           $debit->save(False);
         }
+      }
+      return $invoice;
+    }
+
+    public static function generateManualInvoice($order){
+      date_default_timezone_set('Asia/Kolkata');
+      $prevInvoice = MyInvoice::find()->where(['order_id' => $order->order_id])
+      ->orderBy(['invoice_id' => SORT_DESC ])->one();
+
+      $invoice = new Invoice();
+      $order_rate = MyInvoice::getCurrentOrderRate($order);
+      $tax = MyInvoice::getCurrentTax();
+      $interest =  MyInvoice::getCurrentInterest();
+      $area = $order->area;
+      $areaCode = strtoupper(substr($area->name,0,3));
+
+      $invoice->order_id = $order->order_id;
+      $invoice->tax_id = $tax->tax_id;
+      $invoice->interest_id = $interest->interest_id;
+      // First Inovice
+      if(!$prevInvoice){
+        $invoice->prev_lease_rent = 0;
+        $invoice->start_date = date('Y-m-d');
+        $invoice->prev_tax = 0;
+        $invoice->prev_interest = 0;
+        $invoice->prev_dues_total = 0;
+        $invoice->current_lease_rent = $order_rate->amount1;
+        $order_rate = MyInvoice::getOrderRate($order);
+        $diffDate = MyInvoice::getDateDifference($order_rate->end_date);
+        if($diffDate >= 0){ // NEED TO ADD AMOUNT2
+          $invoice->current_lease_rent = $order_rate->amount1 + $order_rate->amount2;
+        }
+        $invoice->current_tax = ($tax->rate/100) * $invoice->current_lease_rent;
+        $invoice->current_dues_total = $invoice->current_tax + $invoice->current_lease_rent;
+        $invoice->due_date = date('Y-m-d', strtotime($order->start_date. ''));
+        $invoice->lease_current_start = $invoice->due_date;
+        $invoice->lease_prev_start = $invoice->due_date;
+        $invoice->total_amount = $invoice->current_dues_total;
+        $invoice->flag = '1';
+        $invoice->invoice_code = MyInvoice::generateInvoiceCode($areaCode);
+        $invoice->email_status = '0';
+        // CG EMAIL
+      }else{
+        $totalPenal = MyInvoice::getTotalPenal($order);
+        $totalPenalPaid = MyInvoice::getTotalPenalPaid($order);
+        $balancePenal = $totalPenal - $totalPenalPaid;
+
+        $totalLeaseRent = MyInvoice::getTotalLeaseRent($order);
+        $totalLeaseRentPaid = MyInvoice::getTotalLeaseRentPaid($order);
+        $balanceLease = $totalLeaseRent - $totalLeaseRentPaid;
+
+        $totalTaxPaid = MyInvoice::getTotalTaxPaid($order);
+        $totalTax = MyInvoice::getTotalTax($order);
+        $balanceTax = $totalTax - $totalTaxPaid;
+
+        $invoice->prev_lease_rent = $prevInvoice->current_lease_rent;
+        $invoice->start_date = date('Y-m-d');
+        $invoice->prev_tax = $prevInvoice->current_tax;
+        $penalAmount = MyInvoice::calculatePenalInterest($order,$prevInvoice,$interest);
+        $balancePenal = MyInvoice::calculateBalancePenalAmount($order);
+        $balanceAmount = $balanceTax + $balanceLease + $balancePenal + $penalAmount;
+        $invoice->prev_interest = round($penalAmount+$balancePenal);
+        $totalAmount = MyInvoice::getTotalAmount($order);
+        $totalAmount = $totalAmount + $prevInvoice->getTotalPenalForInvoice();
+        $totalAmountPaid = $prevInvoice->getTotalAmountOnInvoicePaid();
+        $due = $totalAmount - $totalAmountPaid;
+        //$invoice->prev_dues_total = $due + $invoice->prev_interest;
+        $invoice->prev_dues_total = $balanceAmount;
+        $invoice->current_lease_rent = $order_rate->amount1;
+        $order_rate = MyInvoice::getOrderRate($order);
+        $diffDate = MyInvoice::getDateDifference($order_rate->end_date);
+        if($diffDate >= 0){ // NEED TO ADD AMOUNT2
+          $invoice->current_lease_rent = $order_rate->amount1 + $order_rate->amount2;
+        }
+        $invoice->current_tax = ($tax->rate/100) * $invoice->current_lease_rent;
+        $invoice->current_dues_total = $invoice->current_tax + $invoice->current_lease_rent;
+        $invoice->due_date = date('Y-m-d', strtotime($prevInvoice->due_date. ' + 1 year'));
+        $invoice->lease_current_start = $invoice->due_date;
+        $invoice->lease_prev_start = $prevInvoice->due_date;
+        $invoice->total_amount = $invoice->current_dues_total + $invoice->prev_dues_total;
+        $invoice->flag = '1';
+        $invoice->invoice_code = MyInvoice::generateInvoiceCode($areaCode);
+        $invoice->email_status = '0';
+        // CG EMAIL
+        //Generate Debit Note
       }
       return $invoice;
     }

@@ -14,13 +14,15 @@ $config = [
             'transport' => [
                 'class' => 'Swift_SmtpTransport',
                 'host' => 'smtp.gmail.com',
-                'username' => 'castorgodinho22@gmail.com',
-                'password' => 'ajilrkdqxmvjirfo',
+                'username' => 'gidcleaserent@gmail.com',
+                //'username' => 'castorgodinho22@gmail.com',
+                //'password' => 'ajilrkdqxmvjirfo',
+                'password' => 'mywxotfaajklijyk',
                 'port'=>'465',
-                'encryption'=>'ssl'                   
-            ], 
+                'encryption'=>'ssl'
+            ],
         ],
-        
+
         'formatter' => [
             'class' => 'yii\i18n\Formatter',
             'nullDisplay' => '',
@@ -54,7 +56,7 @@ $config = [
             ],
         ],
         'db' => $db,
-        /* 
+        /*
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,

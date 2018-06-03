@@ -68,8 +68,8 @@ class Payment extends \yii\db\ActiveRecord
         return [
             'payment_id' => 'Receipt ID',
             'order_id' => 'Order ID',
-            'amount' => 'Amount',
-            'start_date' => 'Start Date',
+            'amount' => 'Amount Paid',
+            'start_date' => 'Date',
             'mode' => 'Mode',
             'invoice_id' => 'Invoice ID',
             'tds_rate' => 'Tds Rate',

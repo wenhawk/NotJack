@@ -19,7 +19,7 @@ class SearchUsers extends Users
     {
         return [
             [['user_id'], 'integer'],
-            [['email', 'password'], 'safe'],
+            [['email', 'password','type'], 'safe'],
         ];
     }
 
@@ -63,6 +63,7 @@ class SearchUsers extends Users
         ]);
 
         $query->andFilterWhere(['like', 'email', $this->email])
+             ->andFilterWhere(['like', 'type', $this->type])
             ->andFilterWhere(['like', 'password', $this->password]);
 
         return $dataProvider;

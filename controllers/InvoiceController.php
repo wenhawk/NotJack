@@ -143,18 +143,18 @@ class InvoiceController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($id)
     {
         if (\Yii::$app->user->can('createInvoice')){
             $model = new Invoice();
 
             if ($model->load(Yii::$app->request->post())) {
-                  $model->save(False);
-
-                return $this->redirect(['view','id' =>$model->invoice_id ]);
+              $model->save(False);
+              return $this->redirect(['view','id' =>$model->invoice_id ]);
             }
-
-             return $this->render('create', [
+            $order = Orders::find()->where(['order_id' => $id ])->one();
+            $model = MyInvoice::generateManualInvoice($order);
+            return $this->render('create', [
                  'model' => $model,
              ]);
         }else{

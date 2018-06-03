@@ -11,7 +11,7 @@ use yii\widgets\ActiveForm;
 ?>
 <div class="invoice-index">
 
-   
+
     <?php $form = ActiveForm::begin(); ?>
     <div class="row">
         <div class="col-md-2">
@@ -36,7 +36,7 @@ use yii\widgets\ActiveForm;
             <?= $form->field($model, 'search_key')->textInput(); ?>
         </div>
     </div>
-    
+
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-success']) ?>
     </div>
@@ -48,6 +48,12 @@ use yii\widgets\ActiveForm;
             ['class' => 'yii\grid\SerialColumn'],
 
             'invoice_code',
+            [
+              'label' => 'Plot No.',
+              'value' => function($dataProvider){
+                  return $dataProvider->order->plots;
+              }
+            ],
 			[
 				'label' => 'Bill Date',
 				'attribute' => 'start_date',
@@ -65,12 +71,12 @@ use yii\widgets\ActiveForm;
                 'label' => 'Grand Total (INR)',
                 'attribute' => 'total_amount',
             ],
-            
+
             [
                 'label' => 'Amount Paid',
                 'value' => function ($dataProvider) {
                     $amount = Payment::find()->where(['invoice_id' => $dataProvider->invoice_id])->andWhere(['status' => 1])->sum('amount');
-                    
+
                     if($amount == '')
                      return 0;
                     else
@@ -81,7 +87,7 @@ use yii\widgets\ActiveForm;
                 'label' => 'Balance',
                 'value' => function ($dataProvider) {
                     $amount = Payment::find()->where(['invoice_id' => $dataProvider->invoice_id])->andWhere(['status' => 1])->sum('amount');
-                    
+
                     if($amount == '')
                      return $dataProvider->total_amount;
                     else
@@ -96,7 +102,7 @@ use yii\widgets\ActiveForm;
                     }else{
                         return 'Not Sent';
                     }
-                    
+
                 }
             ],
             //'start_date',

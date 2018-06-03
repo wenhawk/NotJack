@@ -5,6 +5,8 @@ namespace app\controllers;
 use Yii;
 use app\models\Rate;
 use app\models\Payment;
+use app\models\Month;
+use app\models\YearReport;
 use app\models\SearchRate;
 use app\models\Log;
 use app\models\Debit;
@@ -75,6 +77,27 @@ class ReportController extends Controller
           'message' => $message,
           'post' => $post
         ]);
+    }
+
+    public function actionMonth(){
+        $order_id = 0;
+        if (\Yii::$app->user->can('viewLedgerReport', ['order_id' => $order_id ])){
+            if(Yii::$app->request->post()){
+              $year = Yii::$app->request->post('year');
+              $month = new Month();
+              $month->setData($year);
+              $years = YearReport::getYearArray();
+              return $this->render('month_report',[
+                'month' => $month,
+                'year' => $year,
+                'years' => $years
+              ]);
+            }else{
+              return $this->render('monthly');
+            }
+        }else{
+            throw new \yii\web\ForbiddenHttpException;
+        }
     }
 
     public function actionLedger()

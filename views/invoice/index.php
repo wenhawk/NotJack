@@ -30,8 +30,6 @@ $this->title = 'Invoices';
             ['class' => 'yii\grid\SerialColumn'],
 
             'invoice_code',
-            'tax.rate',
-            'interest.rate',
             'order.order_number',
             [
 
@@ -51,7 +49,10 @@ $this->title = 'Invoices';
                 }
             ],
 
-            ['class' => 'yii\grid\ActionColumn'],
+            ['class' => 'yii\grid\ActionColumn',
+            'visibleButtons' => [
+              'update' => Yii::$app->user->can('update'),
+            ]],
         ],
     ]); ?>
 </div>

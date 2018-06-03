@@ -127,7 +127,7 @@ use yii\widgets\ActiveForm;
 
 </div>
 
-  <label for="">TDS</label>
+  <label for="">TDS (if applicable)</label>
   <select id='tds_triger' class="form-control" name="tds">
     <option value="tds">NO TDS</option>
     <option value="no-tds">TDS</option>

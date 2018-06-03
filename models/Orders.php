@@ -127,7 +127,7 @@ class Orders extends \yii\db\ActiveRecord
             $this->file->saveAs('unit_documents/' . $this->file->baseName . '.' . $this->file->extension);
             echo $this->document;
 
-            
+
     }
 
     public function uploadTranfer(){

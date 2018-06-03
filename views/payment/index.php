@@ -44,7 +44,11 @@ $this->title = 'Receipt';
             'mode',
             'invoice.order.company.name',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            ['class' => 'yii\grid\ActionColumn',
+            'visibleButtons' => [
+                'update' => Yii::$app->user->can('update'),
+            ]],
+
         ],
     ]); ?>
 </div>

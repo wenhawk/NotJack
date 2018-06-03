@@ -1,11 +1,11 @@
-<?php 
+<?php
 
 namespace app\models;
 
 use Yii;
 
 class Mail extends \yii\base\Model{
-    public $serverLocation = 'http::localhost/gidc/';
+    public $serverLocation = 'http://localhost/gidc/';
     public $sentFrom = 'castorgodinho22@gmail.com';
 
     public function sendMail($id){

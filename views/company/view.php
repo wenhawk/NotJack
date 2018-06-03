@@ -138,12 +138,22 @@ use yii\data\ActiveDataProvider;
       <div class="panel-heading">
 
       <div class="row">
-        <div class="col-md-6">
+
+        <div class="col-md-4">
         <b> Plots:</b> <?= $order->plots; ?>
         <?php if ($order->shed_no != ""){ ?><b>Shed Number: </b><?= $order->shed_no ?><?php } ?>
           <?php if ($order->godown_no != ""){ ?><b>Godown Number: </b><?= $order->godown_no ?><?php } ?>
         </div>
-        <div class="col-md-6">
+
+          <div class="col-md-4">
+            <?php  if($order->status == 0){  ?>
+            <center> <b>Status:</b> De-active </center>
+          <?php } else { ?>
+            <center> <b>Status:</b> Active </center>
+          <?php }  ?>
+          </div>
+
+        <div class="col-md-4">
           <div class="text-right">
 
             <b> Unit No:</b>  <?= $order->order_number ?> </p>
@@ -196,20 +206,22 @@ use yii\data\ActiveDataProvider;
         if($count > 1){
           echo "<p><b>Transfer Date: </b>". date('d-m-Y', strtotime($order->start_date))."</p>";
         }
-      }else{
-          echo date('d-m-Y', strtotime($order->start_date));
+      else{
             echo "<p><b>Transfer Date: </b> ------ </p>";
-      }
+          }
+        }else{
+          echo date('d-m-Y', strtotime($order->start_date));
+        }
 		  ?>
-          <?php
-          $date = date('Y-m-d',strtotime($order->end_date.' - 30 days'));
+          <?php if(Yii::$app->user->can('admin')) {
+          $date = date('Y-m-d',strtotime($order->end_date.' - 365 days'));
           $diffDate = MyInvoice::getDateDifference($date);
           ?>
           <?php if($diffDate >= 0 ){ ?>
           <p  style="color:red"><b>Renewal Date: </b><?=  date('d-m-Y', strtotime($order->end_date)); ?></p><br>
          <?php } else { ?>
             <p  style="color:black"><b>Renewal Date: </b><?=  date('d-m-Y', strtotime($order->end_date)); ?></p><br>
-         <?php } ?>
+         <?php } }?>
           <p><b>Company: </b><?= $order->company->name ?></p><br>
           <p><b>Industrial Area: </b><?= $order->area->name ?></p><br>
         </div>
@@ -228,7 +240,11 @@ use yii\data\ActiveDataProvider;
             <?php }?>
           <?php if(Yii::$app->user->can('company') || Yii::$app->user->can('admin')){ ?>
             <a href="index.php?r=report%2Fledger&order_id=<?= $order->order_id; ?>" class="btn btn-success">Ledger Statment </a>
+            <br>
+            <br>
+            <a href="index.php?r=invoice%2Fcreate&id=<?= $order->order_id; ?>" class="btn btn-success">Manual Invoice </a>
             <?php }?>
+
           </p>
         </div>
       </div>
@@ -319,15 +335,17 @@ use yii\data\ActiveDataProvider;
             }
           },
           'columns' => [
-            'amount',
+            'payment_no',
             [
-              'label' => 'Start Date',
+              'label' => 'Date',
+              'attribute' => 'start_date',
               'value' => function($provider){
                   return date('d-m-Y', strtotime($provider->start_date));
               }
             ],
             'mode',
             'invoice.invoice_code',
+            'amount',
             [
               'class' => 'yii\grid\ActionColumn',
               'header' => 'Actions',

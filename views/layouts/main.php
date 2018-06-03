@@ -65,6 +65,7 @@ AppAsset::register($this);
                      ['label' => 'Ledger', 'url' => ['/report/ledger']],
                      ['label' => 'Renewal', 'url' => ['/report/renewal']],
                      ['label' => 'Logs', 'url' => ['/log/index']],
+                      ['label' => 'Monthly', 'url' => ['/report/month']],
                 ],
             ];
         }else if(\Yii::$app->user->can('company')){
@@ -85,6 +86,7 @@ AppAsset::register($this);
                      ['label' => 'Ledger', 'url' => ['/report/ledger']],
                      ['label' => 'Renewal', 'url' => ['/report/renewal']],
                      ['label' => 'Logs', 'url' => ['/log/index']],
+                     ['label' => 'Monthly', 'url' => ['/report/month']],
                 ],
             ];
         }

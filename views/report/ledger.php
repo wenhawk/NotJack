@@ -3,7 +3,7 @@
     use yii\helpers\Html;
 ?>
 
-<h1>Ledger</h1>
+<center><h1>Ledger Statement</h1></center>
 
 <?php $form = Html::beginForm(); ?>
 <form action="<?=  \Yii::$app->request->BaseUrl ?>/index.php?r=report%2Fledger" method="POST">
@@ -50,13 +50,14 @@
 <br>
 <table class="table table-bordered">
     <tr class="active">
-        <td>Sr. No</td>
-        <td>Particulars</td>
-        <td>Date</td>
-		    <td>Voucher Type</td>
-        <td>Debit</td>
-        <td>Credit</td>
-        <td>Total Invoice Amount</td>
+        <td><b>Sr. No</b></td>
+        <td><b>Particulars</b></td>
+        <td><b>Date</b></td>
+		    <td><b>Voucher Type</b></td>
+        <td><b>Debit</b></td>
+        <td><b>Credit</b></td>
+        <td><b>Mode</b></td>
+        <td><b>Total Invoice Amount</b></td>
     </tr>
     <?php
         $status = True;
@@ -66,16 +67,16 @@
         $invoice_total = 0;
         $payment_total = 0;
         foreach($invoice as $in){
-            array_push($led, new Ledger($in->invoice_code, $in->start_date, 'Invoice',$in->current_dues_total , True,$in->flag ,$in->total_amount ));
+            array_push($led, new Ledger($in->invoice_id,$in->invoice_code, $in->start_date, 'Invoice Bill',$in->current_dues_total , True,$in->flag ,$in->total_amount,'-NA-' ));
             $invoice_total += $in->total_amount;
         }
         foreach($payment as $pay){
-            array_push($led, new Ledger($pay->payment_no, $pay->start_date, 'Receipt', $pay->amount, False,$pay->status, 0));
+            array_push($led, new Ledger($pay->payment_id,$pay->payment_no, $pay->start_date, 'Receipt', $pay->amount, False,$pay->status, 0,$pay->mode));
             $payment_total += $pay->amount;
         }
         foreach($debit as $deb){
                 $date=date('d-m-Y',strtotime($deb->start_date));
-                array_push($led, new Ledger($deb->debit_id, $date , 'Debit Note',$deb->penal, True , $deb->flag,0));
+                array_push($led, new Ledger($deb->debit_id,$deb->debit_id, $date , 'Debit Note',$deb->penal, True , $deb->flag,0,'-NA-'));
                 $invoice_total += $deb->penal;
         }
         function cmp($a, $b)
@@ -110,22 +111,24 @@
             }
 
         if($record->flag == '1'){
-          if($record->type == 'Invoice'){
-            echo "<tr> <td>$sr_no</td> <td>". $record->particulars ."</td> <td>".date('d-m-Y',strtotime($record->date)) ."</td><td>". $record->type."</td><td>$amountD</td><td>$amountC</td><td>".$record->inoviceTotal."</td></tr>";
+          if($record->type == 'Invoice Bill'){
+            echo "<tr> <td>$sr_no</td> <td><a href='index.php?r=invoice%2Fview&id=".$record->id."' >". $record->particulars ."</></td> <td>".date('d-m-Y',strtotime($record->date)) ."</td><td>". $record->type."</td><td>$amountD</td><td>$amountC</td><td>".$record->mode."</td><td>".$record->inoviceTotal."</td></tr>";
           }else{
             if($record->type == 'Debit Note'){
-              echo "<tr> <td>$sr_no</td> <td>DEBIT/000". $record->particulars ."</td> <td>".date('d-m-Y',strtotime($record->date)) ."</td><td>". $record->type."</td><td>$amountD</td><td>$amountC</td><td>".$record->inoviceTotal."</td></tr>";
+              echo "<tr> <td>$sr_no</td> <td>DEBIT/000". $record->particulars ."</td> <td>".date('d-m-Y',strtotime($record->date)) ."</td><td>". $record->type."</td><td>$amountD</td><td>$amountC</td><td>".$record->mode."</td><td> -NA- </td></tr>";
             }else{
-              echo "<tr> <td>$sr_no</td> <td>". $record->particulars ."</td> <td>".date('d-m-Y',strtotime($record->date)) ."</td><td>". $record->type."</td><td>$amountD</td><td>$amountC</td><td>".$record->inoviceTotal."</td></tr>";
+              echo "<tr> <td>$sr_no</td><td> <a href='index.php?r=payment%2Fview&id=".$record->id."' >". $record->particulars ."</></td> <td>".date('d-m-Y',strtotime($record->date)) ."</td><td>". $record->type."</td><td>$amountD</td><td>$amountC</td><td>".$record->mode."</td><td> -NA- </td></tr>";
             }
 
           }
 
         }else{
           if($record->type == 'Debit Note'){
-            echo "<tr> <td>$sr_no</td> <td>DEBIT/000". $record->particulars ."</td> <td>".date('d-m-Y',strtotime($record->date)) ."</td><td>". $record->type." JV </td><td>$amountD</td><td>$amountC</td><td>".$record->inoviceTotal."</td></tr>";
+            echo "<tr> <td>$sr_no</td> <td>DEBIT/000". $record->particulars ."</td> <td>".date('d-m-Y',strtotime($record->date)) ."</td><td>". $record->type." [JV] </td><td>$amountD</td><td>$amountC</td><td>".$record->mode."</td><td> -NA- </td></tr>";
+          }else if($record->type == 'Invoice Bill'){
+            echo "<tr class='danger' > <td>$sr_no</td> <td><a href='index.php?r=invoice%2Fview&id=".$record->id."' >". $record->particulars ."</></td> <td>".date('d-m-Y',strtotime($record->date)) ."</td><td>". $record->type." [JV] </td><td>$amountD</td><td>$amountC</td><td>".$record->mode."</td><td>".$record->inoviceTotal."</td></tr>";
           }else{
-            echo "<tr class='danger' > <td>$sr_no</td> <td>". $record->particulars ."</td> <td>".date('d-m-Y',strtotime($record->date)) ."</td><td>". $record->type." JV </td><td>$amountD</td><td>$amountC</td><td>".$record->inoviceTotal."</td></tr>";
+            echo "<tr class='danger' > <td> <a href='index.php?r=payment%2Fview&id=".$record->id."' >". $record->particulars ."</></td> <td>".date('d-m-Y',strtotime($record->date)) ."</td><td>". $record->type." [JV] </td><td>$amountD</td><td>$amountC</td><td>".$record->mode."</td><td>".$record->inoviceTotal."</td></tr>";
           }
 
         }
@@ -133,6 +136,6 @@
         }
         $outstanding = ($debitTotal - $creditTotal);
         echo "<tr> <td>#</td><td></td> <td>Balance Due</td> <td> </td><td></td><td>". $outstanding ."</td></tr>";
-        echo "<tr> <td>#</td><td></td> <td>Total</td> <td> </td><td>". $debitTotal ."</td><td>". ($outstanding + $creditTotal) ."</td></tr>";
+        echo "<tr> <td>#</td><td></td> <td><b>Total</b></td> <td> </td><td><b>". $debitTotal ."</b></td><td><b>". ($outstanding + $creditTotal) ."</b></td></tr>";
     ?>
 </table>

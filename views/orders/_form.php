@@ -14,7 +14,7 @@ use kartik\select2\Select2;
 
     <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 
-    <?php 
+    <?php
         echo $form->field($model, 'company_id')->widget(Select2::classname(), [
             'data' => ArrayHelper::map($company, 'company_id', 'name'),
             'language' => 'de',
@@ -24,27 +24,27 @@ use kartik\select2\Select2;
             ],
         ]);
     ?>
-    <?php 
+    <?php
         echo $form->field($model, 'area_id')->widget(Select2::classname(), [
             'data' => ArrayHelper::map($area, 'area_id', 'name'),
             'language' => 'de',
             'options' => ['placeholder' => 'Industrial Estate'],
             'pluginOptions' => [
                 'allowClear' => true,
-                
+
             ],
         ]);
     ?>
     <?= $form->field($model, 'total_area')->textInput(); ?>
-    <?= $form->field($model, 'plots')->textInput(); ?>  
-    <?php 
+    <?= $form->field($model, 'plots')->textInput(); ?>
+    <?php
         if($model->company_id){
     ?>
         <?= $form->field($model, 'transfer_file')->fileInput()->label("Transfer Document"); ?>
     <?php
         }
     ?>
-    
+
     <?= $form->field($model, 'start_date')->widget(\yii\jui\DatePicker::classname(), [
         'options' => [
           'class' => 'form-control'
@@ -84,10 +84,10 @@ use kartik\select2\Select2;
             ]) ?>
         </div>
         <div class="col-md-3">
-            <?= $form->field($orderRate, 'amount1')->textInput()->label('Lease Rent',['class'=>'label-class']); ?>    
+            <?= $form->field($orderRate, 'amount1')->textInput()->label('Lease Rent',['class'=>'label-class']); ?>
         </div>
         <div class="col-md-3">
-            <?= $form->field($orderRate, 'amount2')->textInput()->label('Increment',['class'=>'label-class']); ?>  
+            <?= $form->field($orderRate, 'amount2')->textInput()->label('Increment',['class'=>'label-class']); ?>
         </div>
     </div>
 

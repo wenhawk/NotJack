@@ -83,7 +83,7 @@ class MyPayment extends Payment
         echo '$balanceAmount'.$balanceAmount.'<br>';
         $tds_paid = MyPayment::getTdsAmount($invoice);
         if($this->tds_amount > 0 && $this->tds_amount){
-          $percent = ($this->tds_amount * 100) / $invoice->current_lease_rent;
+          $percent = ($this->tds_amount * 100) / ($invoice->current_lease_rent + $invoice->prev_lease_rent);
           if($percent < 9.0 || $percent > 10.1 ){
             Yii::$app->session->setFlash('danger', "TDS AMOUNT SHOULD BE BETWEEN 9% to 10.1%, Your Amount: ".round($percent,2));
             return $controller->redirect(['invoice/view' ,'id' => $invoice->invoice_id]);

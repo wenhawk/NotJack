@@ -39,7 +39,10 @@ $this->title = 'Users';
                     }
                 }
             ],
-            'type',
+            [
+              'attribute'=>'type',
+              'filter'=>['Admin'=>'admin','Company' => 'company'],
+            ],
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
