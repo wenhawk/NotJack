@@ -37,6 +37,9 @@ $order = Orders::find()->where(['status' => '1'])->all();
         <td > Penal Interest Rate % : </td>
         <td ><?= $form->field($model, 'interest_id')->dropDownList(ArrayHelper::map($interest, 'interest_id', 'rate'))->label(false); ?></td>
       </tr>
+
+      <?= $form->field($model, 'penalAmount')->textInput()->label(false)->hiddenInput(); ?>
+
       <tr>
         <td > GST Rate : </td>
         <td ><?= $form->field($model, 'tax_id')->dropDownList(ArrayHelper::map($tax, 'tax_id', 'rate'))->label(false); ?></td>
@@ -49,8 +52,19 @@ $order = Orders::find()->where(['status' => '1'])->all();
         <td colspan='2'><h3><b>1. Previous Dues Description: (B)</b></h3></td>
       </tr>
       <tr>
-        <td class='bold-text'>  Previous Lease Period:  </td>
+        <td class='bold-text'>  Previous Lease Period From Date:  </td>
         <td> <?= $form->field($model, 'lease_prev_start')->widget(\yii\jui\DatePicker::classname(), [
+            'options' => [
+              'class' => 'form-control'
+            ],
+            'language' => 'en',
+            'dateFormat' => 'yyyy-MM-dd',
+        ])->label(false) ?></td>
+      </tr>
+
+      <tr>
+        <td class='bold-text'>  Previous Lease Period To Date:  </td>
+        <td> <?= $form->field($model, 'lease_prev_end')->widget(\yii\jui\DatePicker::classname(), [
             'options' => [
               'class' => 'form-control'
             ],

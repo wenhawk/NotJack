@@ -51,7 +51,7 @@ class Invoice extends \yii\db\ActiveRecord
     {
         return [
             [['tax_id', 'order_id', 'interest_id', 'prev_lease_rent', 'prev_tax', 'prev_interest', 'prev_dues_total', 'current_lease_rent', 'current_tax', 'current_dues_total', 'total_amount'], 'integer'],
-            [['start_date', 'due_date', 'lease_current_start', 'lease_prev_start','penalAmount','lease_prev_end'], 'safe'],
+            [['start_date', 'due_date', 'lease_current_start', 'lease_prev_start','penalAmount'], 'safe'],
             [['prev_tax', 'prev_interest', 'prev_dues_total', 'current_lease_rent', 'current_tax', 'current_dues_total', 'due_date', 'total_amount', 'invoice_code'], 'required'],
             [['email_status', 'flag'], 'string', 'max' => 4],
             [['invoice_code'], 'string', 'max' => 100],
@@ -83,7 +83,6 @@ class Invoice extends \yii\db\ActiveRecord
             'email_status' => 'Email Status',
             'lease_current_start' => 'Lease Current From Date',
             'lease_prev_start' => 'Lease Previous From Date',
-            'lease_prev_end' => 'Lease Previous End Date',
             'total_amount' => 'Bill Amount',
             'flag' => 'Flag',
             'invoice_code' => 'Tax Invoice No',

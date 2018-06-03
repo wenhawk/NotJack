@@ -34,7 +34,29 @@ $this->title = 'Unit List';
                     return date('d-m-Y', strtotime($dataProvider->start_date));
                 }
             ],
-             
+            [
+                'label' => 'Email Status',
+                'attribute' => 'email_status',
+                'value' => function($dataProvider){
+                    if($dataProvider->email_status == '1'){
+                      return 'ON';
+                    }else{
+                      return 'OFF';
+                    }
+                }
+            ],
+            [
+
+            'format' => 'html',
+            'value' => function ($model) {
+              if($model->email_status == '1'){
+                return '<a class="btn btn-danger" href="index.php?r=orders%2Ftoggle-email-status&id='.$model->order_id.'">OFF</a>';
+              }else{
+                return '<a class="btn btn-success" href="index.php?r=orders%2Ftoggle-email-status&id='.$model->order_id.'">ON</a>';
+              }
+            },
+            ],
+
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

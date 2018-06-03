@@ -85,14 +85,14 @@ function drawBasic() {
       ]);
 
       var options = {
-        title: 'Population of Largest U.S. Cities',
+        title: 'Year',
         chartArea: {width: '100%'},
         hAxis: {
-          title: 'Total Population',
+          title: 'Amount',
           minValue: 0
         },
         vAxis: {
-          title: 'City'
+          title: 'Year'
         }
       };
 

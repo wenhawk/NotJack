@@ -58,8 +58,6 @@ class MyPayment extends Payment
     return $penalAmount;
   }
 
-
-
     public function generatePayment($status,$controller) {
       if ($this->load(Yii::$app->request->post())) {
         $pi = $this->penal;
@@ -137,6 +135,7 @@ class MyPayment extends Payment
         $this->balance_amount =  $balanceAmount;
         $this->status =  $status;
         $this->payment_no = MyPayment::generatePaymentCode();
+        $this->created_by = Users::findOne(Yii::$app->user->identity->user_id)->email;
         $this->save(False);
          //Generate Debit Note
           if($pi > 0){

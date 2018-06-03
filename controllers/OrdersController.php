@@ -17,6 +17,7 @@ use app\models\Interest;
 use app\models\Payment;
 use app\models\Rate;
 use app\models\SearchOrders;
+use app\models\MyInvoice;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -77,6 +78,23 @@ class OrdersController extends Controller
                 'model' =>  $model,
                 'orders' => $orders,
             ]);
+        }else{
+            throw new \yii\web\ForbiddenHttpException;
+        }
+    }
+
+    public function actionToggleEmailStatus($id)
+    {
+        if (\Yii::$app->user->can('viewOrders')){
+            $model = $this->findModel($id);
+            if($model->email_status == '1'){
+              $model->email_status = '0';
+              $model->save();
+            }else{
+              $model->email_status = '1';
+              $model->save();
+            }
+            $this->redirect(['index']);
         }else{
             throw new \yii\web\ForbiddenHttpException;
         }
@@ -263,6 +281,7 @@ class OrdersController extends Controller
     public function actionDelete($id)
     {
         if (\Yii::$app->user->can('deleteOrders')){
+
             $this->findModel($id)->delete();
             return $this->redirect(['index']);
         }else{

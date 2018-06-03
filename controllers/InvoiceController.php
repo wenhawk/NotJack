@@ -121,7 +121,7 @@ class InvoiceController extends Controller
             $prevPeriodTo = '-';
             if($model->lease_prev_start){
                 $prevPeriodFrom = date('d-m-Y', strtotime($model->lease_prev_start. ' '));
-                $prevPeriodTo = date('d-m-Y', strtotime($model->lease_prev_start. ' + 1 year - 1 day'));
+                $prevPeriodTo = $model->lease_prev_end;
             }
 
             return $this->render('view', [
@@ -149,6 +149,15 @@ class InvoiceController extends Controller
             $model = new Invoice();
 
             if ($model->load(Yii::$app->request->post())) {
+              if($model->penalAmount > 0){
+                $debit = new Debit();
+                $debit->penal = round($penalAmount);
+                $debit->invoice_id = $invoice->invoice_id;
+                $debit->order_id = $order->order_id;
+                $debit->flag = '1';
+                $debit->start_date = date('Y-m-d');
+                $debit->save(False);
+              }
               $model->save(False);
               return $this->redirect(['view','id' =>$model->invoice_id ]);
             }

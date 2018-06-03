@@ -36,6 +36,7 @@ use kartik\select2\Select2;
         ]);
     ?>
     <?= $form->field($model, 'total_area')->textInput(); ?>
+    <?= $form->field($model, 'email_status')->textInput(); ?>
     <?= $form->field($model, 'plots')->textInput(); ?>
     <?php
         if($model->company_id){

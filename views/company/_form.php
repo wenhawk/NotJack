@@ -83,15 +83,15 @@ use yii\widgets\ActiveForm;
             <?= $form->field($model, 'file')->fileInput() ?>
           <?php } ?>
           </div>
-          
+
         </div>
 
       </div>
 
     </div>
 
-   
-    
+
+
     </div>
 
     <div class="row">

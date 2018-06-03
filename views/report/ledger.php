@@ -4,7 +4,6 @@
 ?>
 
 <center><h1>Ledger Statement</h1></center>
-
 <?php $form = Html::beginForm(); ?>
 <form action="<?=  \Yii::$app->request->BaseUrl ?>/index.php?r=report%2Fledger" method="POST">
 <input type="hidden" name="_csrf" value="<?=Yii::$app->request->getCsrfToken()?>" />
@@ -44,11 +43,51 @@
     </div>
 </div>
         <?php } ?>
+
 </form>
 <h3> <?= $to ?> -  <?= $from ?></h3>
 <br>
+<?php if($company) { ?>
+<div class="row">
+  <div class="col-md-12">
+    <table style="font-size: 13px;"class="table table-condensed">
+      <tr style=" border-top: 0px;">
+        <td style=" border-top: 0px;"><b>Name</p>
+        <td style=" border-top: 0px;"><?= $company->name?></td>
+          <td style=" border-top: 0px;"><b>Constitution</td>
+          <td style=" border-top: 0px;"><?= $company->constitution?></td>
+      </tr>
+      <tr style=" border-top: 0px;">
+        <td style=" border-top: 0px;"><b>Product</td>
+        <td style=" border-top: 0px;"><?= $company->products?></td>
+          <td style=" border-top: 0px;"><b>GSTIN</td>
+          <td style=" border-top: 0px;"><?= $company->gstin?></td>
+      </tr>
+      <tr style=" border-top: 0px;">
+        <td style=" border-top: 0px;"><b>Owner</td>
+        <td style=" border-top: 0px;"><?= $company->owner_name?></td>
+          <td style=" border-top: 0px;"><b>Owner Phone</td>
+          <td style=" border-top: 0px;"><?= $company->owner_phone?></td>
+      </tr>
+      <tr style=" border-top: 0px;">
+        <td style=" border-top: 0px;"><b>Owner Mobile</td>
+        <td style=" border-top: 0px;"><?= $company->owner_mobile?></td>
+          <td style=" border-top: 0px;"><b>Competent Name</td>
+          <td style=" border-top: 0px;"><?= $company->competent_name?></td>
+      </tr>
+      <tr style=" border-top: 0px;">
+        <td style=" border-top: 0px;"><b>Competent Email</td>
+        <td style=" border-top: 0px;"><?= $company->competent_email?></td>
+          <td style=" border-top: 0px;"><b>Competent Mobile</td>
+          <td style=" border-top: 0px;"><?= $company->competent_mobile?></td>
+      </tr>
+    </table>
+  </div>
+</div>
 <br>
-<table class="table table-bordered">
+<?php } ?>
+<br>
+<table class="table">
     <tr class="active">
         <td><b>Sr. No</b></td>
         <td><b>Particulars</b></td>
@@ -124,11 +163,11 @@
 
         }else{
           if($record->type == 'Debit Note'){
-            echo "<tr> <td>$sr_no</td> <td>DEBIT/000". $record->particulars ."</td> <td>".date('d-m-Y',strtotime($record->date)) ."</td><td>". $record->type." [JV] </td><td>$amountD</td><td>$amountC</td><td>".$record->mode."</td><td> -NA- </td></tr>";
+            echo "<tr class='danger' > <td>$sr_no</td> <td>DEBIT/000". $record->particulars ."</td> <td>".date('d-m-Y',strtotime($record->date)) ."</td><td>". $record->type." [JV] </td><td>$amountD</td><td>$amountC</td><td>".$record->mode."</td><td> -NA- </td></tr>";
           }else if($record->type == 'Invoice Bill'){
             echo "<tr class='danger' > <td>$sr_no</td> <td><a href='index.php?r=invoice%2Fview&id=".$record->id."' >". $record->particulars ."</></td> <td>".date('d-m-Y',strtotime($record->date)) ."</td><td>". $record->type." [JV] </td><td>$amountD</td><td>$amountC</td><td>".$record->mode."</td><td>".$record->inoviceTotal."</td></tr>";
           }else{
-            echo "<tr class='danger' > <td> <a href='index.php?r=payment%2Fview&id=".$record->id."' >". $record->particulars ."</></td> <td>".date('d-m-Y',strtotime($record->date)) ."</td><td>". $record->type." [JV] </td><td>$amountD</td><td>$amountC</td><td>".$record->mode."</td><td>".$record->inoviceTotal."</td></tr>";
+            echo "<tr class='danger' > <td>$sr_no</td>  <td> <a href='index.php?r=payment%2Fview&id=".$record->id."' >". $record->particulars ."</></td> <td>".date('d-m-Y',strtotime($record->date)) ."</td><td>". $record->type." [JV] </td><td>$amountD</td><td>$amountC</td><td>".$record->mode."</td><td>".$record->inoviceTotal."</td></tr>";
           }
 
         }

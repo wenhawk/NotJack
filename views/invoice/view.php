@@ -126,7 +126,7 @@ use yii\widgets\ActiveForm;
       </tr>
       <tr>
         <td class='bold-text'>  Previous Lease Period:  </td>
-        <?php if($model->prev_lease_rent != 0 ) { ?>
+        <?php if($model->lease_current_start != $model->lease_prev_start ) { ?>
         <td> <?= $prevPeriodFrom  ?> to <?= $prevPeriodTo ?></td>
         <?php } else {  ?>
         <td> - </td>

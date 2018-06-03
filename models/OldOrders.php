@@ -20,75 +20,65 @@ use Yii;
  * @property int $area_id
  * @property int $total_area
  * @property string $plots
- * @property string $document
- * @property string $remark
- * @property int $status
- * @property int $next_order_id
- * @property string $transfer_url
- * @property int $email_status
  *
- * @property Debit[] $debits
  * @property Invoice[] $invoices
- * @property OrderDetails[] $orderDetails
  * @property Plot[] $plots0
- * @property OrderRate[] $orderRates
  * @property Area $area
- * @property Orders $nextOrder
- * @property Orders[] $orders
  * @property Company $company
  * @property Payment[] $payments
  */
 class Orders extends \yii\db\ActiveRecord
 {
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public static function tableName()
     {
         return 'orders';
     }
-    public $file;
-    public $transfer_file;
-    /**
-     * {@inheritdoc}
-     */
-     public function rules()
-     {
-         return [
-             [['order_number', 'company_id', 'total_area', 'plots'], 'required'],
-             [['company_id', 'built_area', 'shed_area', 'godown_area', 'area_id', 'total_area','email_status'], 'integer'],
-             [['start_date', 'end_date', 'document','remark'], 'safe'],
-             [['file', 'transfer_file'], 'file'],
-             [['order_number'], 'string', 'max' => 20],
-             [['shed_no', 'godown_no'], 'string', 'max' => 50],
-             [['plots'], 'string', 'max' => 100],
-             [['area_id'], 'exist', 'skipOnError' => true, 'targetClass' => Area::className(), 'targetAttribute' => ['area_id' => 'area_id']],
-             [['company_id'], 'exist', 'skipOnError' => true, 'targetClass' => Company::className(), 'targetAttribute' => ['company_id' => 'company_id']],
-         ];
-     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
-     public function attributeLabels()
-     {
-         return [
-             'order_id' => 'Unit ID',
-             'order_number' => 'Unit Number',
-             'company_id' => 'Company Name',
-             'built_area' => 'Built Area',
-             'shed_area' => 'Shed Area',
-             'godown_area' => 'Godown Area',
-             'start_date' => 'Allotted Date',
-             'end_date' => 'Renewal Date',
-             'shed_no' => 'Shed No',
-             'godown_no' => 'Godown No',
-             'area_id' => 'Industrial Estate',
-             'total_area' => 'Plot Area',
-             'plots' => 'Plots',
-             'email_status' => 'Email Status',
-         ];
-     }
+    public $file;
+    public $transfer_file;
+    
+    public function rules()
+    {
+        return [
+            [['order_number', 'company_id', 'total_area', 'plots'], 'required'],
+            [['company_id', 'built_area', 'shed_area', 'godown_area', 'area_id', 'total_area'], 'integer'],
+            [['start_date', 'end_date', 'document','remark'], 'safe'],
+            [['file', 'transfer_file'], 'file'],
+            [['order_number'], 'string', 'max' => 20],
+            [['shed_no', 'godown_no'], 'string', 'max' => 50],
+            [['plots'], 'string', 'max' => 100],
+            [['area_id'], 'exist', 'skipOnError' => true, 'targetClass' => Area::className(), 'targetAttribute' => ['area_id' => 'area_id']],
+            [['company_id'], 'exist', 'skipOnError' => true, 'targetClass' => Company::className(), 'targetAttribute' => ['company_id' => 'company_id']],
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        return [
+            'order_id' => 'Unit ID',
+            'order_number' => 'Unit Number',
+            'company_id' => 'Company Name',
+            'built_area' => 'Built Area',
+            'shed_area' => 'Shed Area',
+            'godown_area' => 'Godown Area',
+            'start_date' => 'Allotted Date',
+            'end_date' => 'Renewal Date',
+            'shed_no' => 'Shed No',
+            'godown_no' => 'Godown No',
+            'area_id' => 'Industrial Estate',
+            'total_area' => 'Plot Area',
+            'plots' => 'Plots',
+        ];
+    }
 
     /**
      * @return \yii\db\ActiveQuery

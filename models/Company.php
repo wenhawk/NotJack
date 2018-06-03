@@ -81,7 +81,7 @@ class Company extends \yii\db\ActiveRecord
             'constitution' => 'Constitution',
             'products' => 'Products',
             'gstin' => 'Gstin',
-            'owner_name' => 'Contact Person',
+            'owner_name' => 'Owner Name',
             'owner_phone' => 'Owner Phone',
             'owner_mobile' => 'Owner Mobile',
             'competent_name' => 'Alternate Contact Person',

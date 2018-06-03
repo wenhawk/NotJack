@@ -29,6 +29,7 @@ use yii\widgets\DetailView;
     <!-- <p>Tel: (91)(832)2437470 to 73 | Fax: (91)(832)2437478 to 79</p>
     <p>Email: goaidc1965@gmail.com | Website: http://www.goaidc.com</p> -->
     <p><b>GSTIN: </b>30AAATG7792FIZR <!-- | <b>PAN No. </b>AAATG77921 --></p>
+    <p><b>Generateds By: </b><?= $model->created_by?> <!-- | <b>PAN No. </b>AAATG77921 --></p>
   </div>
 </div>
 <hr>

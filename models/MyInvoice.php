@@ -33,6 +33,31 @@ class MyInvoice extends Invoice
       }
     }
 
+    public static function calculateLeasePeriod($order){
+      $invoices = Invoice::find()->where(['order_id' => $order->order_id])
+      ->andWhere(['flag' => '1'])->orderBy(['invoice_id' => SORT_ASC])
+      ->all();
+      $invoice = Invoice::find()->where(['order_id' => $order->order_id])
+      ->andWhere(['flag' => '1'])->orderBy(['invoice_id' => SORT_DESC])
+      ->one();
+      $totalPaid = MyInvoice::getTotalAmountOnOrder($order);
+      $amount = 0;
+      $start = $invoice->due_date;
+      foreach ($invoices as $i) {
+        $amount =  $amount + $i->current_dues_total;
+        $balance = $totalPaid - $amount;
+        if($balance < 0){
+          $start = $i->due_date;
+          break;
+        }
+      }
+      $end = date('Y-m-d',strtotime($invoice->due_date.' + 1 year - 1 day'));
+      $dateArray = [];
+      array_push($dateArray,$start);
+      array_push($dateArray,$end);
+      return $dateArray;
+    }
+
     public static function generateInvoiceCode($areaCode){
       date_default_timezone_set('Asia/Kolkata');
       $year = date('Y');
@@ -137,6 +162,16 @@ class MyInvoice extends Invoice
       return $amount1;
     }
 
+    public function getTotalAmountOnOrder($order){
+      $amount1 = Payment::find()->where(['order_id' => $order->order_id])
+      ->andWhere(['status' => '1'])
+      ->sum('lease_rent');
+      $amount2 = Payment::find()->where(['order_id' => $order->order_id])
+      ->andWhere(['status' => '1'])
+      ->sum('tax');
+      return $amount1 + $amount2;
+    }
+
 
     public static function calculateBalancePenalAmount($order){
       $totalPenal = MyInvoice::getTotalPenal($order);
@@ -199,8 +234,10 @@ class MyInvoice extends Invoice
         $invoice->email_status = '0';
         // CG EMAIL
         $invoice->save(False);
-        $email = new Mail();
-        $email->sendMail($invoice->invoice_id);
+        if($order->email_status == '1'){
+          $email = new Mail();
+          $email->sendMail($invoice->invoice_id);
+        }
       }else{
         $totalPenal = MyInvoice::getTotalPenal($order);
         $totalPenalPaid = MyInvoice::getTotalPenalPaid($order);
@@ -214,18 +251,15 @@ class MyInvoice extends Invoice
         $totalTax = MyInvoice::getTotalTax($order);
         $balanceTax = $totalTax - $totalTaxPaid;
 
-        $invoice->prev_lease_rent = $prevInvoice->current_lease_rent;
+        $invoice->prev_lease_rent = $balanceLease;
         $invoice->start_date = date('Y-m-d');
-        $invoice->prev_tax = $prevInvoice->current_tax;
+        $invoice->prev_tax = $balanceTax;
         $penalAmount = MyInvoice::calculatePenalInterest($order,$prevInvoice,$interest);
-        $balancePenal = MyInvoice::calculateBalancePenalAmount($order);
         $balanceAmount = $balanceTax + $balanceLease + $balancePenal + $penalAmount;
         $invoice->prev_interest = round($penalAmount+$balancePenal);
         $totalAmount = MyInvoice::getTotalAmount($order);
         $totalAmount = $totalAmount + $prevInvoice->getTotalPenalForInvoice();
         $totalAmountPaid = $prevInvoice->getTotalAmountOnInvoicePaid();
-        $due = $totalAmount - $totalAmountPaid;
-        //$invoice->prev_dues_total = $due + $invoice->prev_interest;
         $invoice->prev_dues_total = $balanceAmount;
         $invoice->current_lease_rent = $order_rate->amount1;
         $order_rate = MyInvoice::getOrderRate($order);
@@ -237,16 +271,20 @@ class MyInvoice extends Invoice
         $invoice->current_dues_total = $invoice->current_tax + $invoice->current_lease_rent;
         $invoice->due_date = date('Y-m-d', strtotime($prevInvoice->due_date. ' + 1 year'));
         $invoice->lease_current_start = $invoice->due_date;
-        $invoice->lease_prev_start = $prevInvoice->due_date;
-        $invoice->total_amount = $invoice->current_dues_total + $invoice->prev_dues_total;
+        $dateArray = MyInvoice::calculateLeasePeriod($order);
+        $invoice->lease_prev_end = $dateArray[1];
+        $invoice->lease_prev_start = $dateArray[0];
+        $invoice->total_amount = round($invoice->current_dues_total + $invoice->prev_dues_total);
         $invoice->flag = '1';
         $invoice->invoice_code = MyInvoice::generateInvoiceCode($areaCode);
         $invoice->email_status = '0';
         // CG EMAIL
         $invoice->save(False);
         echo 'hello'.$invoice->invoice_id;
-        $email = new Mail();
-        $email->sendMail($invoice->invoice_id);
+        if($order->email_status == '1'){
+          $email = new Mail();
+          $email->sendMail($invoice->invoice_id);
+        }
         //Generate Debit Note
         if($penalAmount > 0){
           $debit = new Debit();
@@ -312,19 +350,16 @@ class MyInvoice extends Invoice
         $totalTax = MyInvoice::getTotalTax($order);
         $balanceTax = $totalTax - $totalTaxPaid;
 
-        $invoice->prev_lease_rent = $prevInvoice->current_lease_rent;
+        $invoice->prev_lease_rent = $balanceLease;
         $invoice->start_date = date('Y-m-d');
-        $invoice->prev_tax = $prevInvoice->current_tax;
+        $invoice->prev_tax = $balanceTax;
         $penalAmount = MyInvoice::calculatePenalInterest($order,$prevInvoice,$interest);
-        $balancePenal = MyInvoice::calculateBalancePenalAmount($order);
         $balanceAmount = $balanceTax + $balanceLease + $balancePenal + $penalAmount;
         $invoice->prev_interest = round($penalAmount+$balancePenal);
         $totalAmount = MyInvoice::getTotalAmount($order);
         $totalAmount = $totalAmount + $prevInvoice->getTotalPenalForInvoice();
         $totalAmountPaid = $prevInvoice->getTotalAmountOnInvoicePaid();
-        $due = $totalAmount - $totalAmountPaid;
-        //$invoice->prev_dues_total = $due + $invoice->prev_interest;
-        $invoice->prev_dues_total = $balanceAmount;
+        $invoice->prev_dues_total = round($balanceAmount);
         $invoice->current_lease_rent = $order_rate->amount1;
         $order_rate = MyInvoice::getOrderRate($order);
         $diffDate = MyInvoice::getDateDifference($order_rate->end_date);
@@ -335,9 +370,12 @@ class MyInvoice extends Invoice
         $invoice->current_dues_total = $invoice->current_tax + $invoice->current_lease_rent;
         $invoice->due_date = date('Y-m-d', strtotime($prevInvoice->due_date. ' + 1 year'));
         $invoice->lease_current_start = $invoice->due_date;
-        $invoice->lease_prev_start = $prevInvoice->due_date;
-        $invoice->total_amount = $invoice->current_dues_total + $invoice->prev_dues_total;
+        $dateArray = MyInvoice::calculateLeasePeriod($order);
+        $invoice->lease_prev_end = $dateArray[1];
+        $invoice->lease_prev_start = $dateArray[0];
+        $invoice->total_amount = round($invoice->current_dues_total + $invoice->prev_dues_total);
         $invoice->flag = '1';
+        $invoice->penalAmount = round($penalAmount);
         $invoice->invoice_code = MyInvoice::generateInvoiceCode($areaCode);
         $invoice->email_status = '0';
         // CG EMAIL

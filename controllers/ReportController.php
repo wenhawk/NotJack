@@ -103,8 +103,13 @@ class ReportController extends Controller
     public function actionLedger()
     {
         $order_id = 0;
+        $company = null;
         if(Yii::$app->request->get()){
             $order_id = Yii::$app->request->get('order_id');
+            $order = Orders::findOne($order_id);
+            if($order){
+              $company = $order->company;
+            }
         }
         if (\Yii::$app->user->can('viewLedgerReport', ['order_id' => $order_id ])){
             $invoice = '';
@@ -171,6 +176,7 @@ class ReportController extends Controller
                 'ledger',
                 [
                     'invoice' => $invoice,
+                    'company' => $company,
                     'payment' => $payment,
                     'debit' => $debit,
                     'to' => $to,
