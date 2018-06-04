@@ -123,7 +123,6 @@ class InvoiceController extends Controller
                 $prevPeriodFrom = date('d-m-Y', strtotime($model->lease_prev_start. ' '));
                 $prevPeriodTo = $model->lease_prev_end;
             }
-
             return $this->render('view', [
                     'start_date' => $start_date,
                     'invoiceDueDate' => $invoiceDueDate,
@@ -191,7 +190,7 @@ class InvoiceController extends Controller
         //     throw new \yii\web\ForbiddenHttpException;
         // }
         MyInvoice::createInvoices();
-        //return $this->render('invoice-generated');
+        return $this->render('invoice-generated');
     }
 
     /**

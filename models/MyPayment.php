@@ -75,10 +75,10 @@ class MyPayment extends Payment
         $balanceTax = $totalTax - $totalTaxPaid;
         $balanceLease = $totalLeaseRent - $totalLeaseRentPaid;
         $balanceAmount = $balanceTax + $balanceLease + $balancePenal;
-        echo '$balanceTax'.$balanceTax.'<br>';
-        echo '$balanceLease'.$balanceLease.'<br>';
-        echo '$balancePenal'.$balancePenal.'<br>';
-        echo '$balanceAmount'.$balanceAmount.'<br>';
+        // echo '$balanceTax'.$balanceTax.'<br>';
+        // echo '$balanceLease'.$balanceLease.'<br>';
+        // echo '$balancePenal'.$balancePenal.'<br>';
+        // echo '$balanceAmount'.$balanceAmount.'<br>';
         $tds_paid = MyPayment::getTdsAmount($invoice);
         if($this->tds_amount > 0 && $this->tds_amount){
           $percent = ($this->tds_amount * 100) / ($invoice->current_lease_rent + $invoice->prev_lease_rent);

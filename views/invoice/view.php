@@ -1,6 +1,7 @@
-<?php
+./<?php
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use app\models\MyInvoice;
 ?>
 
 <style>
@@ -236,11 +237,14 @@ use yii\widgets\ActiveForm;
 </div>
 </div>
 <br>
-<?php if(Yii::$app->user->can('admin')){
-  if($model->flag == '1'){
-    echo "<center><a href='index.php?r=payment/render-payment&id=". $model->invoice_code  ."' class='btn btn-primary text-center'>PAY</a></center>";
+<?php
+  if(MyInvoice::isLatestInvoice($model,$model->order)){
+    if($model->flag == '1'){
+      echo "<center><a href='index.php?r=payment/render-payment&id=".$model->invoice_id."' class='btn btn-primary text-center'>PAY</a></center>";
+    }
   }
-} ?>
+
+ ?>
 <?php
   $script = <<< JS
     $(document).ready(function(){

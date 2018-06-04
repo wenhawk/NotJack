@@ -15,6 +15,16 @@ use Yii;
 class MyInvoice extends Invoice
 {
 
+    public static function isLatestInvoice($invoice,$order){
+      $latestInvoice = Invoice::find()->where(['order_id' => $order->order_id])
+      ->orderBy(['invoice_id' => SORT_DESC])->one();
+      if($latestInvoice->invoice_id == $invoice->invoice_id){
+        return True;
+      }else{
+        return False;
+      }
+    }
+
     public static function createInvoices(){
       $orders = Orders::find()->all();
       foreach ($orders as $order) {
@@ -25,7 +35,7 @@ class MyInvoice extends Invoice
         if($invoice){
         $date = date('Y-m-d', strtotime($invoice->due_date. ''));
         $diffDate = MyInvoice::getDateDifference($date);
-        echo $diffDate.'<br>';
+        // echo $diffDate.'<br>';
           if($diffDate == -30 ){
             MyInvoice::generateInvoice($order);
           }
@@ -66,7 +76,6 @@ class MyInvoice extends Invoice
       $year = intval($year) + 1;
       $invoiceCode = $invoiceCode . '-' . $year;
       $latestInvoice = Invoice::find()
-      ->andWhere(['flag' => '1'])
       ->orderBy(['invoice_id' => SORT_DESC])
       ->one();
       if($latestInvoice){
@@ -115,6 +124,7 @@ class MyInvoice extends Invoice
       $amount = Invoice::find()->where(['order_id' => $order->order_id])
       ->andWhere(['flag' => 1])
       ->sum('current_lease_rent');
+      // echo 'hello'.$amount.'<br>';
       return $amount;
     }
 
@@ -138,6 +148,8 @@ class MyInvoice extends Invoice
       $amount = Payment::find()->where(['order_id' => $order->order_id])
       ->andWhere(['status' => '1'])
       ->sum('lease_rent');
+      // echo 'order_id '.$order->order_id.'<br>';
+      // echo 'pay '.$amount.'<br>';
       return $amount;
     }
 
@@ -174,7 +186,7 @@ class MyInvoice extends Invoice
 
 
     public static function calculateBalancePenalAmount($order){
-      $totalPenal = MyInvoice::getTotalPenal($order);
+        $totalPenal = MyInvoice::getTotalPenal($order);
       $totalPenalPaid = MyInvoice::getTotalPenalPaid($order);
       $balancePenal = $totalPenal - $totalPenalPaid;
       return $balancePenal;
@@ -198,6 +210,7 @@ class MyInvoice extends Invoice
     public static function generateInvoice($order){
       date_default_timezone_set('Asia/Kolkata');
       $prevInvoice = MyInvoice::find()->where(['order_id' => $order->order_id])
+      ->andWhere(['flag' => '1'])
       ->orderBy(['invoice_id' => SORT_DESC ])->one();
 
       $invoice = new Invoice();
@@ -228,6 +241,7 @@ class MyInvoice extends Invoice
         $invoice->due_date = date('Y-m-d', strtotime($order->start_date. ''));
         $invoice->lease_current_start = $invoice->due_date;
         $invoice->lease_prev_start = $invoice->due_date;
+        $invoice->lease_prev_end = $invoice->due_date;
         $invoice->total_amount = $invoice->current_dues_total;
         $invoice->flag = '1';
         $invoice->invoice_code = MyInvoice::generateInvoiceCode($areaCode);
@@ -280,7 +294,7 @@ class MyInvoice extends Invoice
         $invoice->email_status = '0';
         // CG EMAIL
         $invoice->save(False);
-        echo 'hello'.$invoice->invoice_id;
+        // echo 'hello'.$invoice->invoice_id;
         if($order->email_status == '1'){
           $email = new Mail();
           $email->sendMail($invoice->invoice_id);
@@ -302,6 +316,7 @@ class MyInvoice extends Invoice
     public static function generateManualInvoice($order){
       date_default_timezone_set('Asia/Kolkata');
       $prevInvoice = MyInvoice::find()->where(['order_id' => $order->order_id])
+      ->andWhere(['flag' => '1'])
       ->orderBy(['invoice_id' => SORT_DESC ])->one();
 
       $invoice = new Invoice();
@@ -332,6 +347,7 @@ class MyInvoice extends Invoice
         $invoice->due_date = date('Y-m-d', strtotime($order->start_date. ''));
         $invoice->lease_current_start = $invoice->due_date;
         $invoice->lease_prev_start = $invoice->due_date;
+        $invoice->lease_prev_end = $invoice->due_date;
         $invoice->total_amount = $invoice->current_dues_total;
         $invoice->flag = '1';
         $invoice->invoice_code = MyInvoice::generateInvoiceCode($areaCode);

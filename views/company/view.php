@@ -313,7 +313,7 @@ use yii\data\ActiveDataProvider;
       ?>
       <h4><u>Receipts</u></h4>
       <?php
-        $query = Payment::find()->where(['order_id' => $order->order_id])->andWhere(['status' => 1]);
+        $query = Payment::find()->where(['order_id' => $order->order_id]);
         $provider = new ActiveDataProvider([
           'query' => $query,
           'pagination' => [

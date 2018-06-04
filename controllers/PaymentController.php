@@ -96,7 +96,7 @@ class PaymentController extends Controller
             $model = new MyPayment();
             if(! \Yii::$app->user->can('company')){
                 $model->generatePayment('1',$this);
-                //return $this->redirect(['view', 'id' => $model->payment_id ]);
+                return $this->redirect(['view', 'id' => $model->payment_id ]);
             }else{
                 $model->generatePayment('0',$this);
                 return $this->render('online-payment', [
@@ -112,8 +112,12 @@ class PaymentController extends Controller
     public function actionRenderPayment($id){
         date_default_timezone_set('Asia/Kolkata');
         $model = new MyPayment();
-        $invoice = MyInvoice::find()->where(['invoice_code' => $id])->one();
+        $invoice = MyInvoice::find()->where(['invoice_id' => $id])
+        ->one();
         $order = $invoice->order;
+        echo 'invoice_code '.$id.'<br>';
+        echo 'invoice_id '.$invoice->invoice_id.'<br>';
+        echo '$order->id  '.$order->order_id.'<br>';
         $interest =  MyInvoice::getCurrentInterest();
         if(!$invoice){
             throw new \yii\web\ForbiddenHttpException;
@@ -140,7 +144,7 @@ class PaymentController extends Controller
         $totalTaxPaid = MyInvoice::getTotalTaxPaid($order);
         $totalTax = MyInvoice::getTotalTax($order);
         $penalAmount = 0;
-        $diffDate = 100;
+        //$diffDate = 100;
         if( $diffDate > 0 ){
           $penalAmount = MyPayment::calculatePenalInterest($order,$interest,$diffDate);
         }
