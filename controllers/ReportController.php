@@ -186,6 +186,5 @@ class ReportController extends Controller
         }else{
             throw new \yii\web\ForbiddenHttpException;
         }
-
     }
 }

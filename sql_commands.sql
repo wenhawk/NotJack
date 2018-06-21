@@ -105,3 +105,17 @@ ALTER TABLE `debit` ADD `flag` INT NOT NULL DEFAULT '1' AFTER `order_id`;
 ========
 
 ALTER TABLE `debit` ADD `start_date` DATE NULL AFTER `flag`;
+
+========
+
+ALTER TABLE `orders` ADD `due_date` DATE NOT NULL AFTER `email_status`;
+
+ALTER TABLE `orders` ADD `tansfer_date` DATE NOT NULL AFTER `due_date`;
+
+ALTER TABLE `orders` ADD `folio1` TEXT NULL AFTER `tansfer_date`;
+
+ALTER TABLE `orders` ADD `folio2` TEXT NULL AFTER `filio1`;
+
+ALTER TABLE orders MODIFY total_area int(11) NULL;
+
+ALTER TABLE orders MODIFY email_status tinyint(4) NULL;

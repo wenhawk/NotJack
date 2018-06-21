@@ -242,9 +242,10 @@ use yii\data\ActiveDataProvider;
             <a href="index.php?r=report%2Fledger&order_id=<?= $order->order_id; ?>" class="btn btn-success">Ledger Statment </a>
             <br>
             <br>
-            <a href="index.php?r=invoice%2Fcreate&id=<?= $order->order_id; ?>" class="btn btn-success">Manual Invoice </a>
             <?php }?>
-
+            <?php if(Yii::$app->user->can('admin')){ ?>
+              <a href="index.php?r=invoice%2Fcreate&id=<?= $order->order_id; ?>" class="btn btn-success">Manual Invoice </a>
+            <?php }?>
           </p>
         </div>
       </div>

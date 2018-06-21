@@ -20,7 +20,7 @@ class ReportSearch extends Area
     public $order_id;
     public $amount;
     public $invoice_id;
-    
+
     public function rules()
     {
         return [

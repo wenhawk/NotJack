@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jun 03, 2018 at 12:53 PM
+-- Generation Time: Jun 21, 2018 at 08:19 AM
 -- Server version: 5.6.26
 -- PHP Version: 5.6.12
 
@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS `area` (
   `total_area` int(11) DEFAULT NULL,
   `rate` int(11) NOT NULL,
   `flag` tinyint(4) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `area`
@@ -47,8 +47,14 @@ INSERT INTO `area` (`area_id`, `name`, `total_area`, `rate`, `flag`) VALUES
 (14, 'Verna Industrial Estate', 1677552, 7, 0),
 (15, 'Margao', 7777799, 56, 0),
 (16, 'Margao', 7777799, 57, 0),
-(17, 'Verna Industrial Estate', 1677552, 8, 1),
-(18, 'Margao', 0, 57, 1);
+(17, 'Verna Industrial Estate', 1677552, 8, 0),
+(18, 'Margao', 0, 57, 0),
+(19, 'Verna Industrial Estate', 1677552, 2430, 0),
+(20, 'Margao', 0, 1830, 0),
+(21, 'Verna Industrial Estate', 0, 2430, 0),
+(22, 'Verna Industrial Estate', 1000, 2430, 0),
+(23, 'Margao', 1000, 1830, 1),
+(24, 'Verna Industrial Estate', 0, 2430, 1);
 
 -- --------------------------------------------------------
 
@@ -96,13 +102,13 @@ CREATE TABLE IF NOT EXISTS `auth_assignment` (
 --
 
 INSERT INTO `auth_assignment` (`item_name`, `user_id`, `created_at`) VALUES
-('accounts', '30', 1525053047),
-('accounts', '40', 1525053208),
-('admin', '1', 1527850144),
-('admin', '43', 1527850769),
-('company', '41', 1525249354),
-('company', '42', 1526017411),
-('company', '44', 1527831423);
+('accounts', '30', 1528110464),
+('admin', '1', 1528110464),
+('admin', '43', 1528689573),
+('company', '45', NULL),
+('company', '46', 1528689667),
+('company', '47', 1528868828),
+('company', '48', 1528881048);
 
 -- --------------------------------------------------------
 
@@ -125,81 +131,82 @@ CREATE TABLE IF NOT EXISTS `auth_item` (
 --
 
 INSERT INTO `auth_item` (`name`, `type`, `description`, `rule_name`, `data`, `created_at`, `updated_at`) VALUES
-('accounts', 1, NULL, NULL, NULL, 1525053047, 1525053047),
-('admin', 1, NULL, NULL, NULL, 1525053047, 1525053047),
-('changePassword', 2, 'Delete User', NULL, NULL, 1525053046, 1525053046),
-('company', 1, NULL, NULL, NULL, 1525053047, 1525053047),
-('createArea', 2, 'Create a Area', NULL, NULL, 1525053046, 1525053046),
-('createCompany', 2, 'Create a Company', NULL, NULL, 1525053046, 1525053046),
-('createInterest', 2, 'Create a Interest', NULL, NULL, 1525053047, 1525053047),
-('createInvoice', 2, 'Create a Invoice', NULL, NULL, 1525053047, 1525053047),
-('createLog', 2, 'Create Log', NULL, NULL, 1525053047, 1525053047),
-('createOrders', 2, 'Create a Orders', NULL, NULL, 1525053046, 1525053046),
-('createPayment', 2, 'Create a Payment', NULL, NULL, 1525053047, 1525053047),
-('createPlot', 2, 'Create a Plot', NULL, NULL, 1525053046, 1525053046),
-('createRate', 2, 'Create a Rate', NULL, NULL, 1525053046, 1525053046),
-('createSite', 2, 'Create a Site', NULL, NULL, 1525053046, 1525053046),
-('createTax', 2, 'Create a Tax', NULL, NULL, 1525053046, 1525053046),
-('createUsers', 2, 'Create a User', NULL, NULL, 1525053046, 1525053046),
-('deleteArea', 2, 'Delete Area', NULL, NULL, 1525053046, 1525053046),
-('deleteCompany', 2, 'Delete Company', NULL, NULL, 1525053046, 1525053046),
-('deleteInterest', 2, 'Delete Interest', NULL, NULL, 1525053047, 1525053047),
-('deleteInvoice', 2, 'Delete Invoice', NULL, NULL, 1525053047, 1525053047),
-('deleteLog', 2, 'Delete Log', NULL, NULL, 1525053047, 1525053047),
-('deleteOrder', 2, 'Delete Order', NULL, NULL, 1525053046, 1525053046),
-('deletePayment', 2, 'Delete Payment', NULL, NULL, 1525053047, 1525053047),
-('deletePlot', 2, 'Delete Plot', NULL, NULL, 1525053046, 1525053046),
-('deleteRate', 2, 'Delete Rate', NULL, NULL, 1525053046, 1525053046),
-('deleteSite', 2, 'Delete Site', NULL, NULL, 1525053046, 1525053046),
-('deleteTax', 2, 'Delete Site', NULL, NULL, 1525053046, 1525053046),
-('deleteUsers', 2, 'Delete User', NULL, NULL, 1525053046, 1525053046),
-('indexArea', 2, 'Index a Area', NULL, NULL, 1525053046, 1525053046),
-('indexCompany', 2, 'Index a Company', NULL, NULL, 1525053046, 1525053046),
-('indexInterest', 2, 'Index a Interest', NULL, NULL, 1525053047, 1525053047),
-('indexInvoice', 2, 'Index a Invoice', NULL, NULL, 1525053047, 1525053047),
-('indexOrders', 2, 'Index a Orders', NULL, NULL, 1525053046, 1525053046),
-('indexPayment', 2, 'Index a Payment', NULL, NULL, 1525053047, 1525053047),
-('indexPlot', 2, 'Index a Plot', NULL, NULL, 1525053046, 1525053046),
-('indexRate', 2, 'Index a Rate', NULL, NULL, 1525053046, 1525053046),
-('indexSite', 2, 'Index a Site', NULL, NULL, 1525053046, 1525053046),
-('indexTax', 2, 'Index a Tax', NULL, NULL, 1525053046, 1525053046),
-('indexUsers', 2, 'Index a User', NULL, NULL, 1525053046, 1525053046),
-('searchInvoice', 2, 'Delete Invoice', NULL, NULL, 1525053047, 1525053047),
-('staff', 1, NULL, NULL, NULL, 1525053047, 1525053047),
-('updateArea', 2, 'Update Area', NULL, NULL, 1525053046, 1525053046),
-('updateCompany', 2, 'Update Company', NULL, NULL, 1525053046, 1525053046),
-('updateGst', 2, 'Update GST', NULL, NULL, 1525053046, 1525053046),
-('updateInterest', 2, 'Update Interest', NULL, NULL, 1525053047, 1525053047),
-('updateInvoice', 2, 'Update Invoice', NULL, NULL, 1525053047, 1525053047),
-('updateLog', 2, 'Update Log', NULL, NULL, 1525053047, 1525053047),
-('updateOrders', 2, 'Update Orders', NULL, NULL, 1525053046, 1525053046),
-('updateOwnGst', 2, 'Update own GST', 'isGst', NULL, 1525053047, 1525053047),
-('updateOwntds', 2, 'Update own TDS', 'isTds', NULL, 1525053047, 1525053047),
-('updatePayment', 2, 'Update Payment', NULL, NULL, 1525053047, 1525053047),
-('updatePlot', 2, 'Update Plot', NULL, NULL, 1525053046, 1525053046),
-('updateRate', 2, 'Update Rate', NULL, NULL, 1525053046, 1525053046),
-('updateSite', 2, 'Update Site', NULL, NULL, 1525053046, 1525053046),
-('updateTax', 2, 'Update Tax', NULL, NULL, 1525053046, 1525053046),
-('updateUsers', 2, 'Update User', NULL, NULL, 1525053046, 1525053046),
-('uploadReport', 2, 'Upload Report file', NULL, NULL, 1525053046, 1525053046),
-('uploadtds', 2, 'Upload tds file', NULL, NULL, 1525053046, 1525053046),
-('viewArea', 2, 'View Area', NULL, NULL, 1525053046, 1525053046),
-('viewCompany', 2, NULL, NULL, NULL, 1525053046, 1525053046),
-('viewInterest', 2, 'View Interest', NULL, NULL, 1525053047, 1525053047),
-('viewInvoice', 2, 'View Invoice', NULL, NULL, 1525053047, 1525053047),
-('viewInvoiceReport', 2, 'Create a Report', NULL, NULL, 1525053047, 1525053047),
-('viewLedgerReport', 2, 'View a ledger Report', NULL, NULL, 1525053047, 1525053047),
-('viewLogReport', 2, 'View a log Report', NULL, NULL, 1525053047, 1525053047),
-('viewOrders', 2, 'View Orders', NULL, NULL, 1525053046, 1525053046),
-('viewOwnCompany', 2, 'Update own Company', 'isCompany', NULL, 1525053047, 1525053047),
-('viewOwnInvoice', 2, 'View own Invoice', 'isInvoice', NULL, 1525053047, 1525053047),
-('viewOwnPayment', 2, 'View own Payment', 'isPayment', NULL, 1525053047, 1525053047),
-('viewPayment', 2, 'View Payment', NULL, NULL, 1525053047, 1525053047),
-('viewPlot', 2, 'View Plot', NULL, NULL, 1525053046, 1525053046),
-('viewRate', 2, 'View Rate', NULL, NULL, 1525053046, 1525053046),
-('viewSite', 2, 'View Site', NULL, NULL, 1525053046, 1525053046),
-('viewTax', 2, 'View Tax', NULL, NULL, 1525053046, 1525053046),
-('viewUsers', 2, 'View User', NULL, NULL, 1525053046, 1525053046);
+('accounts', 1, NULL, NULL, NULL, 1528110463, 1528110463),
+('admin', 1, NULL, NULL, NULL, 1528110463, 1528110463),
+('changePassword', 2, 'Delete User', NULL, NULL, 1528110463, 1528110463),
+('company', 1, NULL, NULL, NULL, 1528110463, 1528110463),
+('createArea', 2, 'Create a Area', NULL, NULL, 1528110463, 1528110463),
+('createCompany', 2, 'Create a Company', NULL, NULL, 1528110463, 1528110463),
+('createInterest', 2, 'Create a Interest', NULL, NULL, 1528110463, 1528110463),
+('createInvoice', 2, 'Create a Invoice', NULL, NULL, 1528110463, 1528110463),
+('createLog', 2, 'Create Log', NULL, NULL, 1528110463, 1528110463),
+('createOrders', 2, 'Create a Orders', NULL, NULL, 1528110463, 1528110463),
+('createPayment', 2, 'Create a Payment', NULL, NULL, 1528110463, 1528110463),
+('createPlot', 2, 'Create a Plot', NULL, NULL, 1528110463, 1528110463),
+('createRate', 2, 'Create a Rate', NULL, NULL, 1528110463, 1528110463),
+('createSite', 2, 'Create a Site', NULL, NULL, 1528110463, 1528110463),
+('createTax', 2, 'Create a Tax', NULL, NULL, 1528110463, 1528110463),
+('createUsers', 2, 'Create a User', NULL, NULL, 1528110463, 1528110463),
+('deleteArea', 2, 'Delete Area', NULL, NULL, 1528110463, 1528110463),
+('deleteCompany', 2, 'Delete Company', NULL, NULL, 1528110463, 1528110463),
+('deleteInterest', 2, 'Delete Interest', NULL, NULL, 1528110463, 1528110463),
+('deleteInvoice', 2, 'Delete Invoice', NULL, NULL, 1528110463, 1528110463),
+('deleteLog', 2, 'Delete Log', NULL, NULL, 1528110463, 1528110463),
+('deleteOrder', 2, 'Delete Order', NULL, NULL, 1528110463, 1528110463),
+('deletePayment', 2, 'Delete Payment', NULL, NULL, 1528110463, 1528110463),
+('deletePlot', 2, 'Delete Plot', NULL, NULL, 1528110463, 1528110463),
+('deleteRate', 2, 'Delete Rate', NULL, NULL, 1528110463, 1528110463),
+('deleteSite', 2, 'Delete Site', NULL, NULL, 1528110463, 1528110463),
+('deleteTax', 2, 'Delete Site', NULL, NULL, 1528110463, 1528110463),
+('deleteUsers', 2, 'Delete User', NULL, NULL, 1528110463, 1528110463),
+('indexArea', 2, 'Index a Area', NULL, NULL, 1528110463, 1528110463),
+('indexCompany', 2, 'Index a Company', NULL, NULL, 1528110463, 1528110463),
+('indexInterest', 2, 'Index a Interest', NULL, NULL, 1528110463, 1528110463),
+('indexInvoice', 2, 'Index a Invoice', NULL, NULL, 1528110463, 1528110463),
+('indexOrders', 2, 'Index a Orders', NULL, NULL, 1528110463, 1528110463),
+('indexPayment', 2, 'Index a Payment', NULL, NULL, 1528110463, 1528110463),
+('indexPlot', 2, 'Index a Plot', NULL, NULL, 1528110463, 1528110463),
+('indexRate', 2, 'Index a Rate', NULL, NULL, 1528110463, 1528110463),
+('indexSite', 2, 'Index a Site', NULL, NULL, 1528110463, 1528110463),
+('indexTax', 2, 'Index a Tax', NULL, NULL, 1528110463, 1528110463),
+('indexUsers', 2, 'Index a User', NULL, NULL, 1528110463, 1528110463),
+('searchInvoice', 2, 'Delete Invoice', NULL, NULL, 1528110463, 1528110463),
+('staff', 1, NULL, NULL, NULL, 1528110463, 1528110463),
+('updateArea', 2, 'Update Area', NULL, NULL, 1528110463, 1528110463),
+('updateCompany', 2, 'Update Company', NULL, NULL, 1528110463, 1528110463),
+('updateGst', 2, 'Update GST', NULL, NULL, 1528110463, 1528110463),
+('updateInterest', 2, 'Update Interest', NULL, NULL, 1528110463, 1528110463),
+('updateInvoice', 2, 'Update Invoice', NULL, NULL, 1528110463, 1528110463),
+('updateLog', 2, 'Update Log', NULL, NULL, 1528110463, 1528110463),
+('updateOrders', 2, 'Update Orders', NULL, NULL, 1528110463, 1528110463),
+('updateOwnGst', 2, 'Update own GST', 'isGst', NULL, 1528110463, 1528110463),
+('updateOwntds', 2, 'Update own TDS', 'isTds', NULL, 1528110463, 1528110463),
+('updatePayment', 2, 'Update Payment', NULL, NULL, 1528110463, 1528110463),
+('updatePlot', 2, 'Update Plot', NULL, NULL, 1528110463, 1528110463),
+('updateRate', 2, 'Update Rate', NULL, NULL, 1528110463, 1528110463),
+('updateSite', 2, 'Update Site', NULL, NULL, 1528110463, 1528110463),
+('updateTax', 2, 'Update Tax', NULL, NULL, 1528110463, 1528110463),
+('updateUsers', 2, 'Update User', NULL, NULL, 1528110463, 1528110463),
+('uploadReport', 2, 'Upload Report file', NULL, NULL, 1528110463, 1528110463),
+('uploadtds', 2, 'Upload tds file', NULL, NULL, 1528110463, 1528110463),
+('viewArea', 2, 'View Area', NULL, NULL, 1528110463, 1528110463),
+('viewCompany', 2, NULL, NULL, NULL, 1528110463, 1528110463),
+('viewInterest', 2, 'View Interest', NULL, NULL, 1528110463, 1528110463),
+('viewInvoice', 2, 'View Invoice', NULL, NULL, 1528110463, 1528110463),
+('viewInvoiceReport', 2, 'Create a Report', NULL, NULL, 1528110463, 1528110463),
+('viewLedgerReport', 2, 'View a ledger Report', NULL, NULL, 1528110463, 1528110463),
+('viewLogReport', 2, 'View a log Report', NULL, NULL, 1528110463, 1528110463),
+('viewOrders', 2, 'View Orders', NULL, NULL, 1528110463, 1528110463),
+('viewOwnCompany', 2, 'Update own Company', 'isCompany', NULL, 1528110463, 1528110463),
+('viewOwnInvoice', 2, 'View own Invoice', 'isInvoice', NULL, 1528110463, 1528110463),
+('viewOwnLedgerReport', 2, 'view own ledger', 'isOwnLedger', NULL, 1528110463, 1528110463),
+('viewOwnPayment', 2, 'View own Payment', 'isPayment', NULL, 1528110463, 1528110463),
+('viewPayment', 2, 'View Payment', NULL, NULL, 1528110463, 1528110463),
+('viewPlot', 2, 'View Plot', NULL, NULL, 1528110463, 1528110463),
+('viewRate', 2, 'View Rate', NULL, NULL, 1528110463, 1528110463),
+('viewSite', 2, 'View Site', NULL, NULL, 1528110463, 1528110463),
+('viewTax', 2, 'View Tax', NULL, NULL, 1528110463, 1528110463),
+('viewUsers', 2, 'View User', NULL, NULL, 1528110463, 1528110463);
 
 -- --------------------------------------------------------
 
@@ -294,11 +301,13 @@ INSERT INTO `auth_item_child` (`parent`, `child`) VALUES
 ('admin', 'viewInvoiceReport'),
 ('accounts', 'viewLedgerReport'),
 ('admin', 'viewLedgerReport'),
+('viewOwnLedgerReport', 'viewLedgerReport'),
 ('accounts', 'viewLogReport'),
 ('admin', 'viewLogReport'),
 ('admin', 'viewOrders'),
 ('company', 'viewOwnCompany'),
 ('company', 'viewOwnInvoice'),
+('company', 'viewOwnLedgerReport'),
 ('company', 'viewOwnPayment'),
 ('accounts', 'viewPayment'),
 ('admin', 'viewPayment'),
@@ -327,11 +336,12 @@ CREATE TABLE IF NOT EXISTS `auth_rule` (
 --
 
 INSERT INTO `auth_rule` (`name`, `data`, `created_at`, `updated_at`) VALUES
-('isCompany', 0x4f3a32303a226170705c726261635c436f6d70616e7952756c65223a333a7b733a343a226e616d65223b733a393a226973436f6d70616e79223b733a393a22637265617465644174223b693a313532353035333034373b733a393a22757064617465644174223b693a313532353035333034373b7d, 1525053047, 1525053047),
-('isGst', 0x4f3a31363a226170705c726261635c47737452756c65223a333a7b733a343a226e616d65223b733a353a226973477374223b733a393a22637265617465644174223b693a313532353035333034373b733a393a22757064617465644174223b693a313532353035333034373b7d, 1525053047, 1525053047),
-('isInvoice', 0x4f3a32303a226170705c726261635c496e766f69636552756c65223a333a7b733a343a226e616d65223b733a393a226973496e766f696365223b733a393a22637265617465644174223b693a313532353035333034373b733a393a22757064617465644174223b693a313532353035333034373b7d, 1525053047, 1525053047),
-('isPayment', 0x4f3a32303a226170705c726261635c5061796d656e7452756c65223a333a7b733a343a226e616d65223b733a393a2269735061796d656e74223b733a393a22637265617465644174223b693a313532353035333034373b733a393a22757064617465644174223b693a313532353035333034373b7d, 1525053047, 1525053047),
-('isTds', 0x4f3a31363a226170705c726261635c54647352756c65223a333a7b733a343a226e616d65223b733a353a226973546473223b733a393a22637265617465644174223b693a313532353035333034373b733a393a22757064617465644174223b693a313532353035333034373b7d, 1525053047, 1525053047);
+('isCompany', 0x4f3a32303a226170705c726261635c436f6d70616e7952756c65223a333a7b733a343a226e616d65223b733a393a226973436f6d70616e79223b733a393a22637265617465644174223b693a313532383131303436333b733a393a22757064617465644174223b693a313532383131303436333b7d, 1528110463, 1528110463),
+('isGst', 0x4f3a31363a226170705c726261635c47737452756c65223a333a7b733a343a226e616d65223b733a353a226973477374223b733a393a22637265617465644174223b693a313532383131303436333b733a393a22757064617465644174223b693a313532383131303436333b7d, 1528110463, 1528110463),
+('isInvoice', 0x4f3a32303a226170705c726261635c496e766f69636552756c65223a333a7b733a343a226e616d65223b733a393a226973496e766f696365223b733a393a22637265617465644174223b693a313532383131303436333b733a393a22757064617465644174223b693a313532383131303436333b7d, 1528110463, 1528110463),
+('isOwnLedger', 0x4f3a31393a226170705c726261635c4c656467657252756c65223a333a7b733a343a226e616d65223b733a31313a2269734f776e4c6564676572223b733a393a22637265617465644174223b693a313532383131303436333b733a393a22757064617465644174223b693a313532383131303436333b7d, 1528110463, 1528110463),
+('isPayment', 0x4f3a32303a226170705c726261635c5061796d656e7452756c65223a333a7b733a343a226e616d65223b733a393a2269735061796d656e74223b733a393a22637265617465644174223b693a313532383131303436333b733a393a22757064617465644174223b693a313532383131303436333b7d, 1528110463, 1528110463),
+('isTds', 0x4f3a31363a226170705c726261635c54647352756c65223a333a7b733a343a226e616d65223b733a353a226973546473223b733a393a22637265617465644174223b693a313532383131303436333b733a393a22757064617465644174223b693a313532383131303436333b7d, 1528110463, 1528110463);
 
 -- --------------------------------------------------------
 
@@ -357,15 +367,14 @@ CREATE TABLE IF NOT EXISTS `company` (
   `url` text,
   `remark_url` text,
   `tds_url` text
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `company`
 --
 
 INSERT INTO `company` (`user_id`, `company_id`, `name`, `address`, `remark`, `constitution`, `products`, `gstin`, `owner_name`, `owner_phone`, `owner_mobile`, `competent_name`, `competent_email`, `competent_mobile`, `url`, `remark_url`, `tds_url`) VALUES
-(43, 22, 'Googel', 'sdfsd', 'dfsf', 'asdsa', 'asd', 'asdasdas', 'asdasd', '9823431003', NULL, 'sdfsdf', 'sada@hello.com', '9823431003', NULL, NULL, NULL),
-(44, 23, 'Yahoo', 'Address', 'Remark', 'Constitution', 'Products', 'gstin', 'Rooney', '9999999999', NULL, '7777777777', 'alt@gmail.com', '5555555555', NULL, NULL, NULL);
+(48, 27, 'Google', 'Address', 'hello', 'Constitution', 'Products', '123', 'Owner Name', '9999999999', NULL, '7777777777', 'alt@gmail.com', '5555555555', 'gstfiles/CA3.odt', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -381,19 +390,7 @@ CREATE TABLE IF NOT EXISTS `debit` (
   `order_id` int(11) DEFAULT NULL,
   `flag` int(11) NOT NULL DEFAULT '1',
   `start_date` date DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=66 DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `debit`
---
-
-INSERT INTO `debit` (`debit_id`, `penal`, `invoice_id`, `payment_id`, `order_id`, `flag`, `start_date`) VALUES
-(60, 82, 327, 98, 123, 1, '2018-06-03'),
-(61, 47, 327, 99, 123, 1, '2018-06-03'),
-(62, 95, 328, 100, 123, 1, '2018-06-03'),
-(63, 164, 330, 101, 123, 1, '2018-06-03'),
-(64, 164, 332, 102, 123, 1, '2018-06-03'),
-(65, 411, 337, 103, 123, 1, '2018-06-03');
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -451,25 +448,15 @@ CREATE TABLE IF NOT EXISTS `invoice` (
   `flag` tinyint(4) NOT NULL DEFAULT '1',
   `invoice_code` varchar(100) NOT NULL,
   `lease_prev_end` date NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=339 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=359 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `invoice`
 --
 
 INSERT INTO `invoice` (`invoice_id`, `tax_id`, `order_id`, `interest_id`, `start_date`, `prev_lease_rent`, `prev_tax`, `prev_interest`, `prev_dues_total`, `current_lease_rent`, `current_tax`, `current_dues_total`, `due_date`, `email_status`, `lease_current_start`, `lease_prev_start`, `total_amount`, `flag`, `invoice_code`, `lease_prev_end`) VALUES
-(327, 10, 123, 8, '2018-06-03', 0, 0, 0, 0, 2000, 360, 2360, '2018-06-01', NULL, '2018-06-01', '2018-06-01', 2360, 1, 'MAR/18-19/0001', '0000-00-00'),
-(328, 10, 123, 8, '2018-06-03', 305, 55, 129, 489, 2000, 360, 2360, '2019-06-01', NULL, '2019-06-01', '2018-06-01', 2849, 1, 'MAR/18-19/0328', '0000-00-00'),
-(329, 10, 123, 8, '2018-06-03', 0, 0, 0, 0, 2000, 360, 2360, '2020-06-01', 1, '2020-06-01', '2019-06-01', 2360, 1, 'MAR/18-19/0329', '0000-00-00'),
-(330, 10, 123, 8, '2018-06-03', 2000, 360, 0, 2360, 2000, 360, 2360, '2021-06-01', 0, '2021-06-01', '2020-06-01', 4720, 1, 'MAR/18-19/0330', '0000-00-00'),
-(331, 10, 123, 8, '2018-06-03', 0, 0, 0, 0, 2000, 360, 2360, '2022-06-01', 1, '2022-06-01', '2021-06-01', 2360, 1, 'MAR/18-19/0331', '0000-00-00'),
-(332, 10, 123, 8, '2018-06-03', 2000, 360, 0, 2360, 2000, 360, 2360, '2023-06-01', 0, '2023-06-01', '2022-06-01', 4720, 1, 'MAR/18-19/0332', '0000-00-00'),
-(333, 10, 123, 8, '2018-06-03', 0, 0, 0, 0, 2000, 360, 2360, '2024-06-01', 0, '2024-06-01', '2023-06-01', 2360, 1, 'MAR/18-19/0333', '2024-05-31'),
-(334, 10, 123, 8, '2018-06-03', 2000, 360, 0, 2360, 2000, 360, 2360, '2025-06-01', 0, '2025-06-01', '2024-06-01', 4720, 1, 'MAR/18-19/0334', '2025-05-31'),
-(335, 10, 123, 8, '2018-06-03', 4000, 720, 0, 4720, 2000, 360, 2360, '2026-06-01', NULL, '2026-06-01', '2024-06-01', 7080, 1, 'MAR/18-19/0335', '2026-05-31'),
-(336, 10, 123, 8, '2018-06-03', 6000, 1080, 0, 7080, 2000, 360, 2360, '2027-06-01', 0, '2027-06-01', '2024-06-01', 9440, 1, 'MAR/18-19/0336', '2027-05-31'),
-(337, 10, 123, 8, '2018-06-03', 8000, 1440, 0, 9440, 2000, 360, 2360, '2028-06-01', 0, '2028-06-01', '2024-06-01', 11800, 1, 'MAR/18-19/0337', '2028-05-31'),
-(338, 10, 123, 8, '2018-06-03', 0, 0, 0, 0, 2000, 360, 2360, '2029-06-01', 0, '2029-06-01', '2028-06-01', 2360, 1, 'MAR/18-19/0338', '2029-05-31');
+(357, 10, 128, 8, '2018-06-13', 0, 0, 0, 0, 10000, 1800, 11800, '2018-06-13', 0, '2018-06-13', '2018-06-13', 11800, 1, 'MAR/18-19/0001', '2018-06-13'),
+(358, 10, 128, 8, '2018-06-13', 0, 0, 0, 0, 10000, 1800, 11800, '2019-06-13', NULL, '2019-06-13', '2018-06-13', 11800, 1, 'MAR/18-19/0358', '2019-06-12');
 
 -- --------------------------------------------------------
 
@@ -485,7 +472,7 @@ CREATE TABLE IF NOT EXISTS `log` (
   `old_value` text,
   `new_value` text,
   `user_id` int(11) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `log`
@@ -545,7 +532,12 @@ INSERT INTO `log` (`log_id`, `type`, `create_date`, `updated_date`, `old_value`,
 (52, 'Edited Users', '2018-06-01 16:29:29', '2018-06-01 10:59:29', '[{"user_id":43,"email":"wendhadmgray@gmail.com","password":"$2y$13$dHHAWMtOG2w.3iiDr0KqNexsCeBomCkvY2U9U.5maXSJ0E..QHBlu","type":"company","mobile":"9823431003"}]', '[{"user_id":43,"email":"wendhamgray@gmail.com","password":"$2y$13$zRJe6KeRUWeVlOLBolfUN.Kut26psQbM5\\/IkeOjVibjoGsUvMjyw2","type":"admin","mobile":"9823431003"}]', 1),
 (53, 'Edited Company', '2018-06-03 13:36:11', '2018-06-03 08:06:11', '[{"user_id":44,"company_id":23,"name":"Yahoo","address":"Address","remark":"Remark","constitution":"Constitution","products":"Products","gstin":"gstin","owner_name":"Contact Person","owner_phone":"9999999999","owner_mobile":null,"competent_name":"7777777777","competent_email":"alt@gmail.com","competent_mobile":"5555555555","url":null,"remark_url":null,"tds_url":null}]', '[{"user_id":44,"company_id":23,"name":"Yahoo","address":"Address","remark":"Remark","constitution":"Constitution","products":"Products","gstin":"gstin","owner_name":"Salah","owner_phone":"9999999999","owner_mobile":null,"competent_name":"7777777777","competent_email":"alt@gmail.com","competent_mobile":"5555555555","url":null,"remark_url":null,"tds_url":null}]', 1),
 (54, 'Edited Company', '2018-06-03 13:38:06', '2018-06-03 08:08:06', '[{"user_id":44,"company_id":23,"name":"Yahoo","address":"Address","remark":"Remark","constitution":"Constitution","products":"Products","gstin":"gstin","owner_name":"Salah","owner_phone":"9999999999","owner_mobile":null,"competent_name":"7777777777","competent_email":"alt@gmail.com","competent_mobile":"5555555555","url":null,"remark_url":null,"tds_url":null}]', '[{"user_id":44,"company_id":23,"name":"Yahoo","address":"Address","remark":"Remark","constitution":"Constitution","products":"Products","gstin":"gstin","owner_name":"Rooney","owner_phone":"9999999999","owner_mobile":null,"competent_name":"7777777777","competent_email":"alt@gmail.com","competent_mobile":"5555555555","url":null,"remark_url":null,"tds_url":null}]', 1),
-(55, 'Edited Unit', '2018-06-03 14:06:42', '2018-06-03 08:36:42', '[{"order_id":123,"order_number":"GIDC982231MARGA","company_id":23,"built_area":200,"shed_area":null,"godown_area":null,"start_date":"2018-06-01","end_date":"2020-06-04","shed_no":"","godown_no":"","area_id":18,"total_area":2000,"plots":"p222","document":null,"remark":"","status":1,"next_order_id":null,"transfer_url":null,"email_status":1}]', '[{"order_id":123,"order_number":"GIDC982231MARGA","company_id":23,"built_area":200,"shed_area":null,"godown_area":null,"start_date":"2018-06-01","end_date":"2020-06-04","shed_no":"","godown_no":"","area_id":18,"total_area":2000,"plots":"p222","document":null,"remark":"","status":1,"next_order_id":null,"transfer_url":null,"email_status":0}]', 1);
+(55, 'Edited Unit', '2018-06-03 14:06:42', '2018-06-03 08:36:42', '[{"order_id":123,"order_number":"GIDC982231MARGA","company_id":23,"built_area":200,"shed_area":null,"godown_area":null,"start_date":"2018-06-01","end_date":"2020-06-04","shed_no":"","godown_no":"","area_id":18,"total_area":2000,"plots":"p222","document":null,"remark":"","status":1,"next_order_id":null,"transfer_url":null,"email_status":1}]', '[{"order_id":123,"order_number":"GIDC982231MARGA","company_id":23,"built_area":200,"shed_area":null,"godown_area":null,"start_date":"2018-06-01","end_date":"2020-06-04","shed_no":"","godown_no":"","area_id":18,"total_area":2000,"plots":"p222","document":null,"remark":"","status":1,"next_order_id":null,"transfer_url":null,"email_status":0}]', 1),
+(56, 'Edited Users', '2018-06-04 10:12:01', '2018-06-04 04:42:01', '[{"user_id":44,"email":"email@gmail.com","password":"$2y$13$hbDvQpBSgHaEVJRV4Zm0CenkZlnojxgwTzU4Z8YXSIiBF0J7CC0.q","type":"company","mobile":"88888888888"}]', '[{"user_id":44,"email":"email@gmail.com","password":"$2y$13$b0XRnmAcOqIg7Ea\\/WjWF4eLUrYvDjzEngFMhOEsqiCTEGIioNYyFy","type":"admin","mobile":"88888888888"}]', 1),
+(57, 'Edited Users', '2018-06-11 09:29:33', '2018-06-11 03:59:33', '[{"user_id":43,"email":"wendhamgray@gmail.com","password":"$2y$13$zRJe6KeRUWeVlOLBolfUN.Kut26psQbM5\\/IkeOjVibjoGsUvMjyw2","type":"admin","mobile":"9823431003"}]', '[{"user_id":43,"email":"wendhamgray@gmail.com","password":"$2y$13$weOugaPKVT4WmqAkmG6hP.4870gfXmpGa69W91ng4H.DBGzuq5Jdm","type":"admin","mobile":"9823431003"}]', 1),
+(58, 'Edited Unit', '2018-06-13 11:19:30', '2018-06-13 05:49:30', '[{"order_id":126,"order_number":"GIDC272640VERNA","company_id":26,"built_area":null,"shed_area":null,"godown_area":null,"start_date":null,"end_date":null,"shed_no":"","godown_no":"","area_id":17,"total_area":15000,"plots":"plot4","document":null,"remark":"","status":1,"next_order_id":null,"transfer_url":null,"email_status":0}]', '[{"order_id":126,"order_number":"GIDC272640VERNA","company_id":26,"built_area":8000,"shed_area":null,"godown_area":null,"start_date":"2018-06-13","end_date":"2018-11-30","shed_no":"","godown_no":"","area_id":17,"total_area":15000,"plots":"plot4","document":null,"remark":"","status":1,"next_order_id":null,"transfer_url":null,"email_status":0}]', 1),
+(59, 'Edited GSTIN', '2018-06-13 14:41:38', '2018-06-13 09:11:38', '[{"user_id":48,"company_id":27,"name":"Google","address":"Address","remark":"hello","constitution":"Constitution","products":"Products","gstin":"Gstin","owner_name":"Owner Name","owner_phone":"9999999999","owner_mobile":null,"competent_name":"7777777777","competent_email":"alt@gmail.com","competent_mobile":"5555555555","url":null,"remark_url":null,"tds_url":null}]', '[{"user_id":48,"company_id":27,"name":"Google","address":"Address","remark":"hello","constitution":"Constitution","products":"Products","gstin":"123","owner_name":"Owner Name","owner_phone":"9999999999","owner_mobile":null,"competent_name":"7777777777","competent_email":"alt@gmail.com","competent_mobile":"5555555555","url":"gstfiles\\/Untitled 1.pdf","remark_url":null,"tds_url":null}]', 48),
+(60, 'Edited GSTIN', '2018-06-13 14:42:06', '2018-06-13 09:12:06', '[{"user_id":48,"company_id":27,"name":"Google","address":"Address","remark":"hello","constitution":"Constitution","products":"Products","gstin":"123","owner_name":"Owner Name","owner_phone":"9999999999","owner_mobile":null,"competent_name":"7777777777","competent_email":"alt@gmail.com","competent_mobile":"5555555555","url":"gstfiles\\/Untitled 1.pdf","remark_url":null,"tds_url":null}]', '[{"user_id":48,"company_id":27,"name":"Google","address":"Address","remark":"hello","constitution":"Constitution","products":"Products","gstin":"123","owner_name":"Owner Name","owner_phone":"9999999999","owner_mobile":null,"competent_name":"7777777777","competent_email":"alt@gmail.com","competent_mobile":"5555555555","url":"gstfiles\\/CA3.odt","remark_url":null,"tds_url":null}]', 48);
 
 -- --------------------------------------------------------
 
@@ -585,22 +577,29 @@ CREATE TABLE IF NOT EXISTS `orders` (
   `shed_no` varchar(50) DEFAULT NULL,
   `godown_no` varchar(50) DEFAULT NULL,
   `area_id` int(11) DEFAULT NULL,
-  `total_area` int(11) NOT NULL,
+  `total_area` int(11) DEFAULT NULL,
   `plots` varchar(100) NOT NULL,
   `document` text,
   `remark` text,
   `status` tinyint(4) DEFAULT '1',
   `next_order_id` int(11) DEFAULT NULL,
   `transfer_url` text,
-  `email_status` tinyint(4) NOT NULL DEFAULT '1'
-) ENGINE=InnoDB AUTO_INCREMENT=124 DEFAULT CHARSET=latin1;
+  `email_status` tinyint(4) DEFAULT NULL,
+  `due_date` date NOT NULL,
+  `tansfer_date` date NOT NULL,
+  `folio1` text,
+  `folio2` text
+) ENGINE=InnoDB AUTO_INCREMENT=132 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `orders`
 --
 
-INSERT INTO `orders` (`order_id`, `order_number`, `company_id`, `built_area`, `shed_area`, `godown_area`, `start_date`, `end_date`, `shed_no`, `godown_no`, `area_id`, `total_area`, `plots`, `document`, `remark`, `status`, `next_order_id`, `transfer_url`, `email_status`) VALUES
-(123, 'GIDC982231MARGA', 23, 200, NULL, NULL, '2018-06-01', '2020-06-04', '', '', 18, 2000, 'p222', NULL, '', 1, NULL, NULL, 0);
+INSERT INTO `orders` (`order_id`, `order_number`, `company_id`, `built_area`, `shed_area`, `godown_area`, `start_date`, `end_date`, `shed_no`, `godown_no`, `area_id`, `total_area`, `plots`, `document`, `remark`, `status`, `next_order_id`, `transfer_url`, `email_status`, `due_date`, `tansfer_date`, `folio1`, `folio2`) VALUES
+(128, 'GIDC273172MARGA', 27, 300, NULL, NULL, '2018-06-13', '2019-09-30', '', '', 18, 1000, 'p222', NULL, '', 1, NULL, NULL, 0, '0000-00-00', '0000-00-00', NULL, NULL),
+(129, 'GIDC807639VERNA', 27, 1500, NULL, NULL, '2018-06-01', '2018-06-30', '', '', 24, 2000, 'p34', NULL, '', 1, NULL, NULL, 1, '0000-00-00', '0000-00-00', NULL, NULL),
+(130, 'GIDC144936VERNA', 27, NULL, NULL, NULL, NULL, NULL, '', '', 24, NULL, '', NULL, '', 1, NULL, NULL, NULL, '0000-00-00', '0000-00-00', NULL, NULL),
+(131, 'GIDC941636MARGA', 27, NULL, NULL, NULL, NULL, NULL, '', '', 23, NULL, '', NULL, '', 1, NULL, NULL, NULL, '2018-09-08', '2018-09-09', '1', '2');
 
 -- --------------------------------------------------------
 
@@ -627,14 +626,17 @@ CREATE TABLE IF NOT EXISTS `order_rate` (
   `amount2` int(11) DEFAULT NULL,
   `flag` tinyint(4) DEFAULT NULL,
   `order_id` int(11) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=73 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `order_rate`
 --
 
 INSERT INTO `order_rate` (`order_rate_id`, `start_date`, `end_date`, `amount1`, `amount2`, `flag`, `order_id`) VALUES
-(63, '2018-06-01', '2021-06-30', 2000, 200, 1, 123);
+(69, '2018-06-13', '2018-06-30', 10000, 200, 1, 128),
+(70, '2018-06-14', '2021-06-14', 10000, 1000, 1, 129),
+(71, NULL, NULL, NULL, NULL, 1, 130),
+(72, NULL, NULL, NULL, NULL, 1, 131);
 
 -- --------------------------------------------------------
 
@@ -662,19 +664,15 @@ CREATE TABLE IF NOT EXISTS `payment` (
   `transaction_no` varchar(50) DEFAULT NULL,
   `transaction_details` text,
   `created_by` varchar(250) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=104 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=125 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `payment`
 --
 
 INSERT INTO `payment` (`payment_id`, `order_id`, `amount`, `start_date`, `mode`, `invoice_id`, `tds_rate`, `tds_amount`, `balance_amount`, `payment_no`, `penal`, `cheque_no`, `tax`, `lease_rent`, `status`, `tds_file`, `transaction_no`, `transaction_details`, `created_by`) VALUES
-(98, 123, 1000, '2018-06-03', 'cash', 327, 0, 0, 2442, 'GIDC/18-19/0001', 0, '', 153, 847, 1, NULL, NULL, NULL, NULL),
-(99, 123, 1000, '2018-06-03', 'cash', 327, 0, 0, 1489, 'GIDC/18-19/0099', 0, '', 152, 848, 1, NULL, NULL, NULL, NULL),
-(100, 123, 2944, '2018-06-03', 'cash', 328, 0, 0, 2944, 'GIDC/18-19/0100', 224, '', 415, 2305, 1, NULL, NULL, NULL, NULL),
-(101, 123, 4884, '2018-06-03', 'cash', 330, 0, 0, 4884, 'GIDC/18-19/0101', 164, '', 720, 4000, 1, NULL, NULL, NULL, 'castorgodinho@yahoo.in'),
-(102, 123, 4884, '2018-06-03', 'cash', 332, 0, 0, 4884, 'GIDC/18-19/0102', 164, '', 720, 4000, 1, NULL, NULL, NULL, 'castorgodinho@yahoo.in'),
-(103, 123, 12211, '2018-06-03', 'cash', 337, 0, 0, 12211, 'GIDC/18-19/0103', 411, '', 1800, 10000, 1, NULL, NULL, NULL, 'castorgodinho@yahoo.in');
+(123, 128, 1800, '2018-06-13', 'cash', 357, 0, 0, 11800, 'GIDC/18-19/0001', 0, '', 275, 1525, 1, NULL, NULL, NULL, 'castorgodinho@yahoo.in'),
+(124, 128, 10000, '2018-06-13', 'cash', 357, 0, 0, 10000, 'GIDC/18-19/0124', 0, '', 1525, 8475, 1, NULL, NULL, NULL, 'castorgodinho@yahoo.in');
 
 -- --------------------------------------------------------
 
@@ -789,7 +787,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `password` text NOT NULL,
   `type` varchar(50) DEFAULT NULL,
   `mobile` varchar(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `users`
@@ -798,8 +796,12 @@ CREATE TABLE IF NOT EXISTS `users` (
 INSERT INTO `users` (`user_id`, `email`, `password`, `type`, `mobile`) VALUES
 (1, 'castorgodinho@yahoo.in', '$2y$13$n8dnaSlRSpeiazBu4Sfmnu1B36hUisf2LCDqYiD9/KVADxb6fpby.', 'admin', ''),
 (35, 'sony@gmail.com', '$2y$13$lQxZrBJVc4CaVNdm.53SYeS1ZKnbHo.99cLMs3..DvGJKejzQzCx.', 'company', ''),
-(43, 'wendhamgray@gmail.com', '$2y$13$zRJe6KeRUWeVlOLBolfUN.Kut26psQbM5/IkeOjVibjoGsUvMjyw2', 'admin', '9823431003'),
-(44, 'email@gmail.com', '$2y$13$hbDvQpBSgHaEVJRV4Zm0CenkZlnojxgwTzU4Z8YXSIiBF0J7CC0.q', 'company', '88888888888');
+(43, 'wendhamgray@gmail.com', '$2y$13$weOugaPKVT4WmqAkmG6hP.4870gfXmpGa69W91ng4H.DBGzuq5Jdm', 'admin', '9823431003'),
+(44, 'email@gmail.com', '$2y$13$b0XRnmAcOqIg7Ea/WjWF4eLUrYvDjzEngFMhOEsqiCTEGIioNYyFy', 'admin', '88888888888'),
+(45, 'e@gmail.com', '$2y$13$TNEkpGccDtGu45qHNTxJ6eI7ZHH7trRwnyrICS.yTQExNk.L/zlcW', 'company', '1111111112'),
+(46, 'mi@gmail.com', '$2y$13$yDUkaCZF64WUsmBLqUt4VewJCUknNwU7MXYPyLtJGiO2DCdrwneVq', 'company', '88888848888'),
+(47, 'google@gmail.com', '$2y$13$dRdAarkRRBKdIRZsdDOLZuS18U55yfYTQhYrnM7pS3yGpKH6MjwCm', 'company', '88888888885'),
+(48, 'g@gmail.com', '$2y$13$FTlktfMJ0h1qLiuouq4lwOxc438QSSTuB4wl7Tvv4kRqjzKtFyQfm', 'company', '8888888885');
 
 --
 -- Indexes for dumped tables
@@ -947,7 +949,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `area`
 --
 ALTER TABLE `area`
-  MODIFY `area_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=19;
+  MODIFY `area_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=25;
 --
 -- AUTO_INCREMENT for table `area_rate`
 --
@@ -957,12 +959,12 @@ ALTER TABLE `area_rate`
 -- AUTO_INCREMENT for table `company`
 --
 ALTER TABLE `company`
-  MODIFY `company_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=24;
+  MODIFY `company_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=28;
 --
 -- AUTO_INCREMENT for table `debit`
 --
 ALTER TABLE `debit`
-  MODIFY `debit_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=66;
+  MODIFY `debit_id` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `interest`
 --
@@ -972,27 +974,27 @@ ALTER TABLE `interest`
 -- AUTO_INCREMENT for table `invoice`
 --
 ALTER TABLE `invoice`
-  MODIFY `invoice_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=339;
+  MODIFY `invoice_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=359;
 --
 -- AUTO_INCREMENT for table `log`
 --
 ALTER TABLE `log`
-  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=56;
+  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=61;
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=124;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=132;
 --
 -- AUTO_INCREMENT for table `order_rate`
 --
 ALTER TABLE `order_rate`
-  MODIFY `order_rate_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=64;
+  MODIFY `order_rate_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=73;
 --
 -- AUTO_INCREMENT for table `payment`
 --
 ALTER TABLE `payment`
-  MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=104;
+  MODIFY `payment_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=125;
 --
 -- AUTO_INCREMENT for table `plot`
 --
@@ -1007,7 +1009,7 @@ ALTER TABLE `tax`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=45;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=49;
 --
 -- Constraints for dumped tables
 --

@@ -113,5 +113,13 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
-
+    <?php 
+        if($model->folio1){
+            echo "<a href='".$model->folio1."'>Download Folio 1</a> ";
+        }
+        if($model->folio2){
+            echo " <a href='".$model->folio2."'>Download Folio 2</a>";
+            
+        }
+    ?>
 </div>

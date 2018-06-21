@@ -114,8 +114,16 @@ class OrdersController extends Controller
             $area = Area::find()->where(['flag' => '1'])->all();
             if ($model->load(Yii::$app->request->post()) && $orderRate->load(Yii::$app->request->post())) {
                 $model->file = UploadedFile::getInstance($model, 'file');
+                $file1 = UploadedFile::getInstance($model, 'folio_file_1');
+                $file2 = UploadedFile::getInstance($model, 'folio_file_2');
                 if($model->file){
                     $model->upload();
+                }
+                if($file1){
+                    $model->uploadFolio1($file1);
+                }
+                if($file2){
+                    $model->uploadFolio2($file2);
                 }
                 $area_update = Area::find()->where(['area_id' => $model->area_id])->one();
                 $area_update->total_area = $area_update->total_area + $model->total_area;
@@ -131,7 +139,7 @@ class OrdersController extends Controller
                 }else{
                     $model->order_number = $orderNumber;
                 }
-                $model->save();
+                $model->save(False);
                 $orderRate->order_id = $model->order_id;
                 $orderRate->flag = '1';
                 $orderRate->save();
@@ -225,6 +233,17 @@ class OrdersController extends Controller
             $area = Area::find()->all();
             if ($model->load(Yii::$app->request->post()) && $orderRate->load(Yii::$app->request->post())) {
                 $model->file = UploadedFile::getInstance($model, 'file');
+                $file1 = UploadedFile::getInstance($model, 'folio_file_1');
+                $file2 = UploadedFile::getInstance($model, 'folio_file_2');
+                if($model->file){
+                    $model->upload();
+                }
+                if($file1){
+                    $model->uploadFolio1($file1);
+                }
+                if($file2){
+                    $model->uploadFolio2($file2);
+                }
                 if($model->file){
                     $model->upload();
                 }
