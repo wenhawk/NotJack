@@ -15,7 +15,7 @@ class YearReport
       for ($i=0; $i < 5; $i++) {
         $year = new YearReport();
         $y = date('Y', strtotime(date('Y').' - '.$i.'  Year'));
-        echo $i.' '.$y.'<br>';
+        // echo $i.' '.$y.'<br>';
         $year->year = $y;
         $amount = $temp + Payment::find()->where(['between', 'start_date' , $y.'-01-01', $y.'-12-31'])->sum('amount');
         $year->amount = $amount;

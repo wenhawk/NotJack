@@ -21,7 +21,7 @@
 
 
 <script type="text/javascript" src="js/loader.js"></script>
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript" src="js/chart.js"></script>
 
 
 <script type="text/javascript">
@@ -79,9 +79,9 @@ function drawBasic() {
 
       var data = google.visualization.arrayToDataTable([
         ['Year', 'Amount',],
-        <? foreach($years as $y) {?>
+        <?php foreach($years as $y) { ?>
         ['<?= $y->year ?>', <?= $y->amount ?>],
-        <? } ?>
+        <?php } ?>
       ]);
 
       var options = {

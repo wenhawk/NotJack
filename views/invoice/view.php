@@ -1,4 +1,4 @@
-./<?php
+<?php
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use app\models\MyInvoice;
@@ -240,7 +240,7 @@ use app\models\MyInvoice;
 <?php
   if(MyInvoice::isLatestInvoice($model,$model->order)){
     if($model->flag == '1'){
-      echo "<center><a href='index.php?r=payment/render-payment&id=".$model->invoice_id."' class='btn btn-primary text-center'>PAY</a></center>";
+      echo "<center><a href='index.php?r=payment/render-payment&id=".$model->invoice_id ."' class='btn btn-primary text-center'>PAY</a></center>";
     }
   }
 

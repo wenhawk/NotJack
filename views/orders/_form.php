@@ -38,6 +38,10 @@ use kartik\select2\Select2;
     <?= $form->field($model, 'total_area')->textInput(); ?>
     <?= $form->field($model, 'email_status')->textInput(); ?>
     <?= $form->field($model, 'plots')->textInput(); ?>
+    <?= $form->field($model, 'tansfer_date')->textInput(); ?>
+    <?= $form->field($model, 'due_date')->textInput(); ?>
+    <?= $form->field($model, 'folio1')->textInput(); ?>
+    <?= $form->field($model, 'folio2')->textInput(); ?>
     <?php
         if($model->company_id){
     ?>

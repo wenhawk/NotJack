@@ -131,7 +131,7 @@ class OrdersController extends Controller
                 }else{
                     $model->order_number = $orderNumber;
                 }
-                $model->save();
+                $model->save(False);
                 $orderRate->order_id = $model->order_id;
                 $orderRate->flag = '1';
                 $orderRate->save();

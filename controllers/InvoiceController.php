@@ -121,7 +121,7 @@ class InvoiceController extends Controller
             $prevPeriodTo = '-';
             if($model->lease_prev_start){
                 $prevPeriodFrom = date('d-m-Y', strtotime($model->lease_prev_start. ' '));
-                $prevPeriodTo = $model->lease_prev_end;
+                $prevPeriodTo = date('d-m-Y', strtotime($model->lease_prev_end. ' '));
             }
             return $this->render('view', [
                     'start_date' => $start_date,
