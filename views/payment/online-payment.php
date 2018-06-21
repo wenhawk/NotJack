@@ -1,4 +1,5 @@
 <?php
+use yii\helpers\Url;
   $strCurDate = date('d-m-Y');
   $amount= $model->amount;
 
@@ -10,7 +11,7 @@
 
 
 
-<form method="post" id="payment-form" action="http://localhost/gidc/payment/post_request.php">
+<form method="post" id="payment-form" action="http://localhost/NotJack/payment/post_request.php">
 
 <br/>
  
@@ -25,7 +26,7 @@
 <input type="hidden" name="mrctCode" value="T143310"/>
 <input type="hidden" name="currencyType" value="INR"/>
 <input type="hidden" name="bankCode" value="470"/>
-<input type="hidden" name="returnURL" value='http://localhost/gidc/payment/post_response.php'/>
+<input type="hidden" name="returnURL" value='http://localhost/NotJack/payment/post_response.php'/>
 <input type="hidden" name="s2SReturnURL" value="https://tpslvksrv6046/LoginModule/Test.jsp"/>   
 <input type="hidden" name="tpsl_txn_id" value="TXN00111"/>
 <input type="hidden" name="reqDetail" class="amount-hidden" value="Test_<?php echo $amount; ?>_0.0"/>
